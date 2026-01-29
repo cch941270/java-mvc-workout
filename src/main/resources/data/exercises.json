@@ -1,0 +1,34 @@
+{
+  "legExercises": [
+    {
+      "legExerciseType": "STEP_UP",
+      "startedOn": "2026-01-20T18:00:00",
+      "count": 40
+    },
+    {
+      "legExerciseType": "SQUAT",
+      "startedOn": "2026-01-20T19:00:00",
+      "count": 10
+    },
+    {
+      "legExerciseType": "LUNGE",
+      "startedOn": "2026-01-21T20:00:00",
+      "count": 10
+    },
+    {
+      "legExerciseType": "STEP_UP",
+      "startedOn": "2026-01-22T18:00:00",
+      "count": 40
+    },
+    {
+      "legExerciseType": "STEP_UP",
+      "startedOn": "2026-01-23T18:00:00",
+      "count": 40
+    },
+    {
+      "legExerciseType": "STEP_UP",
+      "startedOn": "2026-01-24T18:00:00",
+      "count": 40
+    }
+  ]
+}
