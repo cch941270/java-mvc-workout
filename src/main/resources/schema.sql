@@ -5,3 +5,4 @@ CREATE TABLE IF NOT EXISTS leg_exercise (
     count INT NOT NULL,
     PRIMARY KEY (id)
 );
+CREATE SEQUENCE IF NOT EXISTS leg_exercise_seq START 1 INCREMENT 1;
