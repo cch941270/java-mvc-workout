@@ -1,5 +1,7 @@
 package com.example.workout.legexercise;
 
-import org.springframework.data.repository.ListCrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface LegExerciseRepository extends ListCrudRepository<LegExercise, Integer> {}
+@Repository
+public interface LegExerciseRepository extends JpaRepository<LegExercise, Integer> {}
