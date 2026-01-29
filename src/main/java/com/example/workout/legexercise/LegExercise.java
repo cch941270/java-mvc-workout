@@ -10,7 +10,7 @@ import jakarta.validation.constraints.Positive;
 public record LegExercise(
     @Id
     Integer id,
-    LegExerciseType leg_exercise_type,
+    LegExerciseType legExerciseType,
     LocalDateTime startedOn,
     @Positive
     Integer count,
