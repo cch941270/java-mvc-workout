@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,13 +52,6 @@ public class LegExerciseRepositoryTests {
             40
         );
         repository.save(legExercise3);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        repository.delete(legExercise1);
-        repository.delete(legExercise2);
-        repository.delete(legExercise3);
     }
 
     @Test
