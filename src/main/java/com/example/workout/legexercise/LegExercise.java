@@ -33,6 +33,14 @@ public class LegExercise {
         this.count = count;
     }
 
+    public LegExercise(Integer id, LegExerciseType legExerciseType, LocalDateTime startedOn, Integer count) {
+        super();
+        this.id = id;
+        this.legExerciseType = legExerciseType;
+        this.startedOn = startedOn;
+        this.count = count;
+    }
+
     public Integer getId() {
         return this.id;
     }
