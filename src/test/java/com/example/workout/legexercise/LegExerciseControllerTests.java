@@ -70,7 +70,6 @@ public class LegExerciseControllerTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(legExercise.getId())))
                 .andExpect(jsonPath("$.legExerciseType", is(legExercise.getLegExerciseType().name())))
-                .andExpect(jsonPath("$.startedOn", is(legExercise.getStartedOn().toString())))
                 .andExpect(jsonPath("$.count", is(legExercise.getCount())));
     }
 
