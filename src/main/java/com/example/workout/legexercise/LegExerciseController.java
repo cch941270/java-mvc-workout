@@ -55,6 +55,6 @@ public class LegExerciseController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     void delete(@PathVariable Integer id) {
-        legExerciseRepository.delete(legExerciseRepository.findById(id).get());
+        legExerciseRepository.deleteById(id);
     }
 }
