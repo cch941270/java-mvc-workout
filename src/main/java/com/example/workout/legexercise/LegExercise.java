@@ -38,19 +38,21 @@ public class LegExercise {
         super();
     }
 
-    public LegExercise(LegExerciseType legExerciseType, LocalDateTime startedOn, Integer count) {
+    public LegExercise(LegExerciseType legExerciseType, LocalDateTime startedOn, Integer count, WorkoutUser workoutUser) {
         super();
         this.legExerciseType = legExerciseType;
         this.startedOn = startedOn;
         this.count = count;
+        this.workoutUser = workoutUser;
     }
 
-    public LegExercise(Integer id, LegExerciseType legExerciseType, LocalDateTime startedOn, Integer count) {
+    public LegExercise(Integer id, LegExerciseType legExerciseType, LocalDateTime startedOn, Integer count, WorkoutUser workoutUser) {
         super();
         this.id = id;
         this.legExerciseType = legExerciseType;
         this.startedOn = startedOn;
         this.count = count;
+        this.workoutUser = workoutUser;
     }
 
     public Integer getId() {
