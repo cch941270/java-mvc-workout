@@ -1,0 +1,31 @@
+package com.example.workout.workoutuser;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "workout_users")
+public class WorkoutUser {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "workout_users_id_seq")
+    @SequenceGenerator(name = "workout_users_id_seq", sequenceName = "workout_users_id_seq", allocationSize = 1)
+    private Long id;
+    private String email;
+
+    @Column(name = "hashed_password")
+    private String hashedPassword;
+}
