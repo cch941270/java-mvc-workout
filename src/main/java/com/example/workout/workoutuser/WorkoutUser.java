@@ -37,4 +37,9 @@ public class WorkoutUser {
 
     @OneToMany(mappedBy = "workoutUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LegExercise> legExercises;
+
+    public WorkoutUser(String email, String hashedPassword) {
+        this.email = email;
+        this.hashedPassword = hashedPassword;
+    }
 }
