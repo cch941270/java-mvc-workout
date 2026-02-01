@@ -3,6 +3,8 @@ package com.example.workout.legexercise;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,6 +24,7 @@ public class LegExercise {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "leg_exercises_id_seq")
     @SequenceGenerator(name = "leg_exercises_id_seq", sequenceName = "leg_exercises_id_seq", allocationSize = 1)
     private Integer id;
+    @Enumerated(EnumType.STRING)
     private LegExerciseType legExerciseType;
     private LocalDateTime startedOn;
     @Positive
