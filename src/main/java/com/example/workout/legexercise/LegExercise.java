@@ -3,12 +3,17 @@ package com.example.workout.legexercise;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Positive;
+
+import com.example.workout.workoutuser.WorkoutUser;
 
 @Entity
 @Table(name = "leg_exercises")
@@ -21,6 +26,10 @@ public class LegExercise {
     private LocalDateTime startedOn;
     @Positive
     private Integer count;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "workout_user_id")
+    private WorkoutUser workoutUser;
 
     public LegExercise() {
         super();
