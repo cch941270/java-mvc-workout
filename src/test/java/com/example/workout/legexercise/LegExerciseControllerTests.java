@@ -24,6 +24,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.example.workout.workoutuser.WorkoutUser;
+
 @WebMvcTest(LegExerciseController.class)
 @ActiveProfiles("test")
 public class LegExerciseControllerTests {
@@ -37,6 +39,7 @@ public class LegExerciseControllerTests {
     @MockitoBean
     LegExerciseRepository repository;
 
+    private final WorkoutUser workoutUser = new WorkoutUser("4mV3F@example.com", "password");
     private final List<LegExercise> legExercises = new ArrayList<>();
     
     @BeforeEach
@@ -45,13 +48,15 @@ public class LegExerciseControllerTests {
             1,
             LegExerciseType.STEP_UP,
             LocalDateTime.now(),
-            20
+            20,
+            workoutUser
         ));
         legExercises.add(new LegExercise(
             2,
             LegExerciseType.SQUAT,
             LocalDateTime.now().plus(30, ChronoUnit.MINUTES),
-            10
+            10,
+            workoutUser
         ));
     }
 
@@ -81,7 +86,8 @@ public class LegExerciseControllerTests {
             null,
             LegExerciseType.LUNGE,
             LocalDateTime.now(),
-            5
+            5,
+            workoutUser
         );
         mvc.perform(post("/api/leg-exercises")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -95,7 +101,8 @@ public class LegExerciseControllerTests {
             1,
             LegExerciseType.STEP_UP,
             LocalDateTime.now(),
-            40
+            40,
+            workoutUser
         );
         mvc.perform(put("/api/leg-exercises/1")
                         .contentType(MediaType.APPLICATION_JSON)
