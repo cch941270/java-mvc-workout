@@ -11,11 +11,11 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Positive;
 
 @Entity
-@Table(name = "leg_exercise")
+@Table(name = "leg_exercises")
 public class LegExercise {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "leg_exercise_seq")
-    @SequenceGenerator(name = "leg_exercise_seq", sequenceName = "leg_exercise_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "leg_exercises_id_seq")
+    @SequenceGenerator(name = "leg_exercises_id_seq", sequenceName = "leg_exercises_id_seq", allocationSize = 1)
     private Integer id;
     private LegExerciseType legExerciseType;
     private LocalDateTime startedOn;
