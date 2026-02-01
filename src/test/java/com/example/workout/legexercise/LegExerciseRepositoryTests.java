@@ -20,6 +20,9 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import jakarta.validation.ConstraintViolationException;
 
+import com.example.workout.workoutuser.WorkoutUser;
+import com.example.workout.workoutuser.WorkoutUserRepository;
+
 @DataJpaTest
 @ActiveProfiles("test")
 @Testcontainers
@@ -27,27 +30,39 @@ public class LegExerciseRepositoryTests {
 
     private LegExercise legExercise1;
     private LegExercise legExercise2;
+    private WorkoutUser workoutUser;
 
     @Container
     @ServiceConnection
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16");
     
     @Autowired
+    WorkoutUserRepository workoutUserRepository;
+
+    @Autowired
     LegExerciseRepository repository;
 
     @BeforeEach
     public void setUp() {
+        workoutUser = new WorkoutUser(
+            "JxGw8@example.com",
+            "password"
+        );
+        workoutUserRepository.save(workoutUser);
+
         legExercise1 = new LegExercise(
             LegExerciseType.LUNGE,
             LocalDateTime.now(),
-            10
+            10,
+            workoutUser
         );
         repository.save(legExercise1);
 
         legExercise2 = new LegExercise(
             LegExerciseType.SQUAT,
             LocalDateTime.now().plus(30, ChronoUnit.MINUTES),
-            10
+            10,
+            workoutUser
         );
         repository.save(legExercise2);
     }
@@ -55,7 +70,7 @@ public class LegExerciseRepositoryTests {
     @Test
     void shouldFindAll() {
         List<LegExercise> legExercises = repository.findAll();
-        assertEquals(2, legExercises.size());
+        assertEquals(15, legExercises.size());
     }
 
     @Test
@@ -76,10 +91,11 @@ public class LegExerciseRepositoryTests {
         repository.save(new LegExercise(
             LegExerciseType.STEP_UP,
             LocalDateTime.now().plus(2, ChronoUnit.HOURS),
-            40
+            40,
+            workoutUser
         ));
         List<LegExercise> legExercises = repository.findAll();
-        assertEquals(3, legExercises.size());
+        assertEquals(16, legExercises.size());
     }
 
     @Test
@@ -87,7 +103,8 @@ public class LegExerciseRepositoryTests {
         LegExercise invalidLegExercise = new LegExercise(
             LegExerciseType.STEP_UP,
             LocalDateTime.now().plus(2, ChronoUnit.HOURS),
-            -40
+            -40,
+            workoutUser
         );
         assertThrows(ConstraintViolationException.class, () -> {
             repository.saveAndFlush(invalidLegExercise);
@@ -108,6 +125,6 @@ public class LegExerciseRepositoryTests {
     void shouldDelete() {
         repository.delete(legExercise2);
         List<LegExercise> legExercises = repository.findAll();
-        assertEquals(1, legExercises.size());
+        assertEquals(14, legExercises.size());
     }
 }
