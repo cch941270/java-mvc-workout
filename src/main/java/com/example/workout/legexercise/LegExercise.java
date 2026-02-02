@@ -82,4 +82,12 @@ public class LegExercise {
     public void setCount(Integer count) {
         this.count = count;
     }
+
+    public WorkoutUser getWorkoutUser() {
+        return this.workoutUser;
+    }
+
+    public void setWorkoutUser(WorkoutUser workoutUser) {
+        this.workoutUser = workoutUser;
+    }
 }
