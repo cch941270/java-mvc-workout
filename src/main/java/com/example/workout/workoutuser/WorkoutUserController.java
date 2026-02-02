@@ -38,8 +38,8 @@ public class WorkoutUserController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
-    void create(@Valid @RequestBody WorkoutUser user) {
-        repository.save(user);
+    void create(@Valid @RequestBody WorkoutUserPlain user) {
+        service.createWorkoutUser(user);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
