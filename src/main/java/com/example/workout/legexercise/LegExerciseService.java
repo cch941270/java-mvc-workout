@@ -20,7 +20,7 @@ public class LegExerciseService {
         return repository.findById(id).map(this :: convertToDto);
     }
 
-    private LegExerciseDto convertToDto(LegExercise legExercise) {
+    public LegExerciseDto convertToDto(LegExercise legExercise) {
         return new LegExerciseDto(
             legExercise.getId(),
             legExercise.getLegExerciseType(),
