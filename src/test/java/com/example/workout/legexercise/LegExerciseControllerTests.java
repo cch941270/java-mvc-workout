@@ -39,45 +39,48 @@ public class LegExerciseControllerTests {
     @MockitoBean
     LegExerciseRepository repository;
 
-    private final WorkoutUser workoutUser = new WorkoutUser("4mV3F@example.com", "password");
-    private final List<LegExercise> legExercises = new ArrayList<>();
+    @MockitoBean
+    LegExerciseService service;
+
+    private final WorkoutUser workoutUser = new WorkoutUser((long)1, "4mV3F@example.com", "password");
+    private final List<LegExerciseDto> legExerciseDtos = new ArrayList<>();
     
     @BeforeEach
     void setUp() {
-        legExercises.add(new LegExercise(
+        legExerciseDtos.add(new LegExerciseDto(
             1,
             LegExerciseType.STEP_UP,
             LocalDateTime.now(),
             20,
-            workoutUser
+            workoutUser.getEmail()
         ));
-        legExercises.add(new LegExercise(
+        legExerciseDtos.add(new LegExerciseDto(
             2,
             LegExerciseType.SQUAT,
             LocalDateTime.now().plus(30, ChronoUnit.MINUTES),
             10,
-            workoutUser
+            workoutUser.getEmail()
         ));
     }
 
     @Test
     void shouldFindAll() throws Exception {
-        when(repository.findAll()).thenReturn(legExercises);
+        when(service.findAll()).thenReturn(legExerciseDtos);
         mvc.perform(get("/api/leg-exercises"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.size()", is(legExercises.size())));
+                .andExpect(jsonPath("$.size()", is(legExerciseDtos.size())));
                 
     }
 
     @Test
     void shouldFindById() throws Exception {
-        LegExercise legExercise = legExercises.get(0);
-        when(repository.findById(ArgumentMatchers.anyInt())).thenReturn(Optional.of(legExercise));
+        LegExerciseDto legExerciseDto = legExerciseDtos.get(0);
+        when(service.findById(ArgumentMatchers.anyInt())).thenReturn(Optional.of(legExerciseDto));
         mvc.perform(get("/api/leg-exercises/1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(legExercise.getId())))
-                .andExpect(jsonPath("$.legExerciseType", is(legExercise.getLegExerciseType().name())))
-                .andExpect(jsonPath("$.count", is(legExercise.getCount())));
+                .andExpect(jsonPath("$.id", is(legExerciseDto.id())))
+                .andExpect(jsonPath("$.legExerciseType", is(legExerciseDto.legExerciseType().name())))
+                .andExpect(jsonPath("$.count", is(legExerciseDto.count())));
     }
 
     @Test
