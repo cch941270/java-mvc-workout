@@ -42,4 +42,10 @@ public class WorkoutUser {
         this.email = email;
         this.hashedPassword = hashedPassword;
     }
+
+    public WorkoutUser(Long id, String email, String hashedPassword) {
+        this.id = id;
+        this.email = email;
+        this.hashedPassword = hashedPassword;
+    }
 }
