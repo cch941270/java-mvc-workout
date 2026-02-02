@@ -21,23 +21,25 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/leg-exercises")
 public class LegExerciseController {
     private final LegExerciseRepository legExerciseRepository;
+    private final LegExerciseService legExerciseService;
 
-    public LegExerciseController(LegExerciseRepository legExerciseRepository) {
+    public LegExerciseController(LegExerciseRepository legExerciseRepository, LegExerciseService legExerciseService) {
         this.legExerciseRepository = legExerciseRepository;
+        this.legExerciseService = legExerciseService;
     }
 
     @GetMapping("")
-    List<LegExercise> findAll() {
-        return legExerciseRepository.findAll();
+    List<LegExerciseDto> findAll() {
+        return legExerciseService.findAll();
     }
 
     @GetMapping("/{id}")
-    LegExercise findById(@PathVariable Integer id) {
-        Optional<LegExercise> legExercise = legExerciseRepository.findById(id);
-        if (legExercise.isEmpty()) {
+    LegExerciseDto findById(@PathVariable Integer id) {
+        Optional<LegExerciseDto> legExerciseDto = legExerciseService.findById(id);
+        if (legExerciseDto.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Leg exercise not found.");
         }
-        return legExercise.get();
+        return legExerciseDto.get();
     }
 
     @ResponseStatus(HttpStatus.CREATED)
