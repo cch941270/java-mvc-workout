@@ -1,24 +1,24 @@
 package com.example.workout.legexercise;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+// import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.validation.Valid;
 
-@RestController
-@RequestMapping("/api/leg-exercises")
+@Controller
+// @RequestMapping("/api/leg-exercises")
 public class LegExerciseController {
     private final LegExerciseRepository legExerciseRepository;
     private final LegExerciseService legExerciseService;
@@ -28,9 +28,10 @@ public class LegExerciseController {
         this.legExerciseService = legExerciseService;
     }
 
-    @GetMapping("")
-    List<LegExerciseDto> findAll() {
-        return legExerciseService.findAll();
+    @GetMapping("/")
+    public String indexPage(Model model) {
+        model.addAttribute("allLegExercises", legExerciseService.findAll());
+        return "legexercise/index";
     }
 
     @GetMapping("/{id}")

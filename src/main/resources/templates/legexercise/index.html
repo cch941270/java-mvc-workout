@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Leg Exercises</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        table {
+            width: 100%;
+            background-color: white;
+            border-collapse: collapse;
+            margin-top: 2rem;
+        }
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Leg Exercise Tracker</h1>
+    </header>
+
+    <main class="container">
+        <h2>Leg Exercises</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Time</th>
+                    <th>Count</th>
+                    <th>User Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="legExercise:${allLegExercises}">
+                    <td th:text="${legExercise.id}"></td>
+                    <td th:text="${legExercise.legExerciseType}"></td>
+                    <td th:text="${legExercise.startedOn}"></td>
+                    <td th:text="${legExercise.count}"></td>
+                    <td th:text="${legExercise.workoutUserEmail}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Leg Exercise Tracker</p>
+    </footer>
+</body>
+</html>
