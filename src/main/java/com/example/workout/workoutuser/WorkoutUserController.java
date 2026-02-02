@@ -20,18 +20,20 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/workout-users")
 public class WorkoutUserController {
     private final WorkoutUserRepository repository;
+    private final WorkoutUserService service;
 
-    public WorkoutUserController(WorkoutUserRepository repository) {
+    public WorkoutUserController(WorkoutUserRepository repository, WorkoutUserService service) {
         this.repository = repository;
+        this.service = service;
     }
 
     @GetMapping("/{id}")
-    public WorkoutUser findById(@PathVariable Long id) {
-        Optional<WorkoutUser> user = repository.findById(id);
-        if (user.isEmpty()) {
+    public WorkoutUserDto findById(@PathVariable Long id) {
+        Optional<WorkoutUserDto> userDto = service.findById(id);
+        if (userDto.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
         }
-        return user.get();
+        return userDto.get();
     }
 
     @ResponseStatus(HttpStatus.CREATED)
