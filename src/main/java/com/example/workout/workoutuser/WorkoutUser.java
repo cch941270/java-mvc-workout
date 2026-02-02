@@ -35,7 +35,7 @@ public class WorkoutUser {
     @Column(name = "hashed_password")
     private String hashedPassword;
 
-    @OneToMany(mappedBy = "workoutUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "workoutUser", cascade = CascadeType.ALL)
     private List<LegExercise> legExercises;
 
     public WorkoutUser(String email, String hashedPassword) {
