@@ -3,6 +3,7 @@ package com.example.workout.legexercise;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,11 @@ public class LegExerciseService {
 
     public List<LegExerciseDto> findAll() {
         return repository.findAll().stream().map(this :: convertToDto).toList();
+    }
+
+    public List<LegExercise> findAllSortedByStartedOn() {
+        Sort sortByStartedOnDesc = Sort.by(Sort.Direction.DESC, "startedOn");
+        return repository.findAll(sortByStartedOnDesc);
     }
 
     public Optional<LegExerciseDto> findById(Integer id) {

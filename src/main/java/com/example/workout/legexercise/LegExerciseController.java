@@ -29,7 +29,7 @@ public class LegExerciseController {
 
     @GetMapping({"", "/"})
     public String index(Model model) {
-        List<LegExercise> legExercises = legExerciseRepository.findAll();
+        List<LegExercise> legExercises = legExerciseService.findAllSortedByStartedOn();
         model.addAttribute("legExercises", legExercises);
         return "legexercises/index";
     }
