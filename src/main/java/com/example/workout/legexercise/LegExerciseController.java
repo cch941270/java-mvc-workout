@@ -7,26 +7,28 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-// import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.example.workout.workoutuser.WorkoutUser;
+import com.example.workout.workoutuser.WorkoutUserRepository;
+
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @Controller
-// @RequestMapping("/api/leg-exercises")
+@RequiredArgsConstructor
+@RequestMapping("/leg-exercises")
 public class LegExerciseController {
     private final LegExerciseRepository legExerciseRepository;
     private final LegExerciseService legExerciseService;
-
-    public LegExerciseController(LegExerciseRepository legExerciseRepository, LegExerciseService legExerciseService) {
-        this.legExerciseRepository = legExerciseRepository;
-        this.legExerciseService = legExerciseService;
-    }
+    private final WorkoutUserRepository workoutUserRepository;
 
     @GetMapping({"", "/"})
     public String indexPage(Model model) {
@@ -43,10 +45,19 @@ public class LegExerciseController {
         return legExerciseDto.get();
     }
 
+    @GetMapping({"/new", "/new/"})
+    public String createPage(Model model) {
+        model.addAttribute("allLegExercisesTypes", LegExerciseType.values());
+        return "legexercise/new";
+    }
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping({"", "/"})
-    void create(@Valid @RequestBody LegExercise legExercise) {
+    public String create(@Valid @ModelAttribute LegExercise legExercise) {
+        WorkoutUser workoutUser = workoutUserRepository.findById((long)1).get(); // temp workaround
+        legExercise.setWorkoutUser(workoutUser);
         legExerciseRepository.save(legExercise);
+        return "redirect:/";
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
