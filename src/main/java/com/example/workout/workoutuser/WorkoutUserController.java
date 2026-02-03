@@ -1,0 +1,78 @@
+package com.example.workout.workoutuser;
+
+import java.util.Optional;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequestMapping("/users")
+@RequiredArgsConstructor
+public class WorkoutUserController {
+    private final WorkoutUserRepository repository;
+    private final WorkoutUserService service;
+
+    @GetMapping({"", "/"})
+    public String index(Model model) {
+        // This could be added later if needed
+        return "redirect:/";
+    }
+
+    @GetMapping({"/new", "/new/"})
+    public String newForm(Model model) {
+        model.addAttribute("workoutUser", new WorkoutUserPlain());
+        return "workoutusers/new";
+    }
+
+    @GetMapping({"/{id}", "/{id}/"})
+    public String show(@PathVariable Long id, Model model) {
+        Optional<WorkoutUserDto> workoutUserDto = service.findById(id);
+        if (workoutUserDto.isEmpty()) {
+            return "redirect:/";
+        }
+        model.addAttribute("workoutUser", workoutUserDto.get());
+        return "workoutusers/show";
+    }
+
+    @PostMapping({"", "/"})
+    public String create(@ModelAttribute WorkoutUserPlain workoutUserPlain, RedirectAttributes redirectAttributes) {
+        service.createWorkoutUser(workoutUserPlain);
+        redirectAttributes.addFlashAttribute("success", "Workout user created successfully!");
+        return "redirect:/";
+    }
+
+    @GetMapping({"/{id}/edit", "/{id}/edit/"})
+    public String editForm(@PathVariable Long id, Model model) {
+        Optional<WorkoutUser> workoutUser = repository.findById(id);
+        if (workoutUser.isEmpty()) {
+            return "redirect:/";
+        }
+        model.addAttribute("workoutUser", workoutUser.get());
+        return "workoutusers/edit";
+    }
+
+    @PutMapping({"/{id}", "/{id}/"})
+    public String update(@PathVariable Long id, @ModelAttribute WorkoutUser workoutUser, RedirectAttributes redirectAttributes) {
+        workoutUser.setId(id);
+        repository.save(workoutUser);
+        redirectAttributes.addFlashAttribute("success", "Workout user updated successfully!");
+        return "redirect:/workout-users/{id}";
+    }
+
+    @DeleteMapping({"/{id}", "/{id}/"})
+    public String destroy(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        repository.deleteById(id);
+        redirectAttributes.addFlashAttribute("success", "Workout user deleted successfully!");
+        return "redirect:/";
+    }
+}
