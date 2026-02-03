@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Leg Exercise</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        .form-control:focus {
+            border-color: #27ae60;
+            box-shadow: 0 0 0 0.2rem rgba(39, 174, 96, 0.25);
+        }
+        .btn-primary {
+            background-color: #27ae60;
+            border-color: #27ae60;
+        }
+        .btn-primary:hover {
+            background-color: #229954;
+            border-color: #229954;
+        }
+        .form-section {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="form-section">
+                    <div class="form-header">
+                        <h2>Create New Leg Exercise</h2>
+                        <p class="text-muted">Fill in the details below to record your leg exercise</p>
+                    </div>
+
+                    <form th:action="@{/leg-exercises}" th:object="${legExercise}" method="POST">
+                        <div class="mb-3">
+                            <label for="legExerciseType" class="form-label">Exercise Type</label>
+                            <select th:field="*{legExerciseType}" class="form-select" id="legExerciseType" required>
+                                <option value="">Select exercise type</option>
+                                <option th:each="type : ${T(com.example.workout.legexercise.LegExerciseType).values()}" 
+                                        th:value="${type}" 
+                                        th:text="${type}">Exercise Type</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="startedOn" class="form-label">Start Date & Time</label>
+                            <input type="datetime-local" th:field="*{startedOn}" class="form-control" id="startedOn" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="count" class="form-label">Count (Repetitions)</label>
+                            <input type="number" th:field="*{count}" class="form-control" id="count" min="1" required>
+                            <div class="form-text">Enter the number of repetitions completed</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="workoutUser" class="form-label">Workout User</label>
+                            <select th:field="*{workoutUser}" class="form-select" id="workoutUser" required>
+                                <option value="">Select user</option>
+                                <option th:each="user : ${workoutUsers}" 
+                                        th:value="${user}" 
+                                        th:text="${user.username}">User</option>
+                            </select>
+                            <div class="form-text">Select the user who performed this exercise</div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">Create Exercise</button>
+                            <a th:href="@{/leg-exercises}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
