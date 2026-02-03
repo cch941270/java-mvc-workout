@@ -22,10 +22,20 @@ public class WorkoutUserController {
     private final WorkoutUserRepository repository;
     private final WorkoutUserService service;
 
-    @GetMapping({"", "/"})
-    public String index(Model model) {
-        // This could be added later if needed
-        return "redirect:/";
+    // @GetMapping({"", "/"})
+    // public String index(Model model) {
+    //     // This could be added later if needed
+    //     return "redirect:/";
+    // }
+
+    @GetMapping({"/{id}", "/{id}/"})
+    public String show(@PathVariable Long id, Model model) {
+        Optional<WorkoutUserDto> workoutUserDto = service.findById(id);
+        if (workoutUserDto.isEmpty()) {
+            return "redirect:/leg-exercises";
+        }
+        model.addAttribute("workoutUser", workoutUserDto.get());
+        return "workoutusers/show";
     }
 
     @GetMapping({"/new", "/new/"})
@@ -34,28 +44,18 @@ public class WorkoutUserController {
         return "workoutusers/new";
     }
 
-    @GetMapping({"/{id}", "/{id}/"})
-    public String show(@PathVariable Long id, Model model) {
-        Optional<WorkoutUserDto> workoutUserDto = service.findById(id);
-        if (workoutUserDto.isEmpty()) {
-            return "redirect:/";
-        }
-        model.addAttribute("workoutUser", workoutUserDto.get());
-        return "workoutusers/show";
-    }
-
     @PostMapping({"", "/"})
     public String create(@ModelAttribute WorkoutUserPlain workoutUserPlain, RedirectAttributes redirectAttributes) {
         service.createWorkoutUser(workoutUserPlain);
-        redirectAttributes.addFlashAttribute("success", "Workout user created successfully!");
-        return "redirect:/";
+        redirectAttributes.addFlashAttribute("success", "User created successfully!");
+        return "redirect:/leg-exercises";
     }
 
     @GetMapping({"/{id}/edit", "/{id}/edit/"})
     public String editForm(@PathVariable Long id, Model model) {
         Optional<WorkoutUser> workoutUser = repository.findById(id);
         if (workoutUser.isEmpty()) {
-            return "redirect:/";
+            return "redirect:/leg-exercises";
         }
         model.addAttribute("workoutUser", workoutUser.get());
         return "workoutusers/edit";
@@ -65,14 +65,14 @@ public class WorkoutUserController {
     public String update(@PathVariable Long id, @ModelAttribute WorkoutUser workoutUser, RedirectAttributes redirectAttributes) {
         workoutUser.setId(id);
         repository.save(workoutUser);
-        redirectAttributes.addFlashAttribute("success", "Workout user updated successfully!");
-        return "redirect:/workout-users/{id}";
+        redirectAttributes.addFlashAttribute("success", "User updated successfully!");
+        return "redirect:/users/{id}";
     }
 
     @DeleteMapping({"/{id}", "/{id}/"})
     public String destroy(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         repository.deleteById(id);
-        redirectAttributes.addFlashAttribute("success", "Workout user deleted successfully!");
-        return "redirect:/";
+        redirectAttributes.addFlashAttribute("success", "User deleted successfully!");
+        return "redirect:/leg-exercises";
     }
 }

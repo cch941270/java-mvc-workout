@@ -89,7 +89,7 @@
                         <p><strong>Email:</strong> <span th:text="${workoutUser.email}">user@example.com</span></p>
                     </div>
 
-                    <form th:action="@{/workout-users/{id}(id=${workoutUser.id})}" th:object="${workoutUser}" th:method="PUT">
+                    <form th:action="@{/users/{id}(id=${workoutUser.id})}" th:object="${workoutUser}" th:method="PUT">
 
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
