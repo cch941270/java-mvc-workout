@@ -95,6 +95,10 @@
 <body>
     <div class="container mt-4">
         <div class="row mb-4">
+            <div th:if="${success}" class="col-12 alert alert-success">
+                <p th:text="${success}"></p>
+            </div>
+
             <div class="col-12">
                 <h1 class="text-center mb-3">Leg Exercises</h1>
                 <div class="text-center mb-4">
