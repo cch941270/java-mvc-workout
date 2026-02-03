@@ -46,7 +46,7 @@
                             <label for="legExerciseType" class="form-label">Exercise Type</label>
                             <select th:field="*{legExerciseType}" class="form-select" id="legExerciseType" required>
                                 <option value="">Select exercise type</option>
-                                <option th:each="type : ${T(com.example.workout.legexercise.LegExerciseType).values()}" 
+                                <option th:each="type : ${allLegExerciseTypes}"
                                         th:value="${type}" 
                                         th:text="${type}">Exercise Type</option>
                             </select>
@@ -64,14 +64,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="workoutUser" class="form-label">Workout User</label>
-                            <select th:field="*{workoutUser}" class="form-select" id="workoutUser" required>
-                                <option value="">Select user</option>
-                                <option th:each="user : ${workoutUsers}" 
-                                        th:value="${user}" 
-                                        th:text="${user.username}">User</option>
-                            </select>
-                            <div class="form-text">Select the user who performed this exercise</div>
+                            <label for="workoutUser" class="form-label">Workout User ID:1 (To be fixed)</label>
                         </div>
 
                         <div class="d-flex gap-2">

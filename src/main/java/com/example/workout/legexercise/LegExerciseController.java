@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.workout.workoutuser.WorkoutUser;
+import com.example.workout.workoutuser.WorkoutUserRepository;
+
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -22,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class LegExerciseController {
     private final LegExerciseRepository legExerciseRepository;
     private final LegExerciseService legExerciseService;
+    private final WorkoutUserRepository workoutUserRepository;
 
     @GetMapping({"", "/"})
     public String index(Model model) {
@@ -43,11 +47,14 @@ public class LegExerciseController {
     @GetMapping({"/new", "/new/"})
     public String newForm(Model model) {
         model.addAttribute("legExercise", new LegExercise());
+        model.addAttribute("allLegExerciseTypes", LegExerciseType.values());
         return "legexercises/new";
     }
 
     @PostMapping({"", "/"})
     public String create(@ModelAttribute LegExercise legExercise, RedirectAttributes redirectAttributes) {
+        WorkoutUser workoutUser = workoutUserRepository.findById((long)1).get();
+        legExercise.setWorkoutUser(workoutUser);
         legExerciseRepository.save(legExercise);
         redirectAttributes.addFlashAttribute("success", "Leg exercise created successfully!");
         return "redirect:/leg-exercises";
