@@ -1,7 +1,16 @@
 Start: `./mvnw spring-boot:run` <br>
 Test: `./mvnw test`
 
-Available endpoints:
+Available pages:
+- [/leg-exercises](http://localhost:8080/leg-exercises)
+- [/leg-exercises/new](http://localhost:8080/leg-exercises/new)
+- http://localhost:8080/leg-exercises/{id}/edit
+- http://localhost:8080/leg-exercises/{id}
+- [/users/new](http://localhost:8080/users/new)
+- http://localhost:8080/users/{id}/edit
+- http://localhost:8080/users/{id}
+
+Available API endpoints:
 | Action | Method | URL|
 |---|---|---|
 | Create | POST | http://localhost:8080/api/leg-exercises |
@@ -19,5 +28,5 @@ Dependency
 - Validation
 - Docker Compose Support for running postgreSQL database in docker
 - Flyway migration for database migration
-- Spring security
+- Spring security for password encryption
 - Testcontainers
