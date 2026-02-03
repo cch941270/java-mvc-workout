@@ -26,7 +26,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @ActiveProfiles("test")
 @Testcontainers
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class LegExerciseControllerIntTests {
+public class LegExerciseApiControllerIntTests {
 
     @LocalServerPort
     int randomServerPort;

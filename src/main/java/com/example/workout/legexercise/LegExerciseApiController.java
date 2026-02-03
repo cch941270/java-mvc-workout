@@ -19,11 +19,11 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/leg-exercises")
-public class LegExerciseController {
+public class LegExerciseApiController {
     private final LegExerciseRepository legExerciseRepository;
     private final LegExerciseService legExerciseService;
 
-    public LegExerciseController(LegExerciseRepository legExerciseRepository, LegExerciseService legExerciseService) {
+    public LegExerciseApiController(LegExerciseRepository legExerciseRepository, LegExerciseService legExerciseService) {
         this.legExerciseRepository = legExerciseRepository;
         this.legExerciseService = legExerciseService;
     }

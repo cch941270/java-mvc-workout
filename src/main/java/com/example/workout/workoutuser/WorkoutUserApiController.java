@@ -18,11 +18,11 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/workout-users")
-public class WorkoutUserController {
+public class WorkoutUserApiController {
     private final WorkoutUserRepository repository;
     private final WorkoutUserService service;
 
-    public WorkoutUserController(WorkoutUserRepository repository, WorkoutUserService service) {
+    public WorkoutUserApiController(WorkoutUserRepository repository, WorkoutUserService service) {
         this.repository = repository;
         this.service = service;
     }

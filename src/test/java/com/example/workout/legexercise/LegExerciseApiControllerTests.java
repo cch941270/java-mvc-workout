@@ -26,9 +26,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.example.workout.workoutuser.WorkoutUser;
 
-@WebMvcTest(LegExerciseController.class)
+@WebMvcTest(LegExerciseApiController.class)
 @ActiveProfiles("test")
-public class LegExerciseControllerTests {
+public class LegExerciseApiControllerTests {
 
     @Autowired
     MockMvc mvc;
