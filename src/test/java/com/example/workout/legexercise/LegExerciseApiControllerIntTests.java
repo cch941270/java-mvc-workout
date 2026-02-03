@@ -1,23 +1,23 @@
 package com.example.workout.legexercise;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.web.client.RestClient;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.servlet.client.MockMvcWebTestClient;
+import org.springframework.web.context.WebApplicationContext;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -28,10 +28,10 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class LegExerciseApiControllerIntTests {
 
-    @LocalServerPort
-    int randomServerPort;
+    @Autowired
+    WebApplicationContext context;
 
-    RestClient client;
+    WebTestClient client;
 
     @Container
     @ServiceConnection
@@ -39,31 +39,36 @@ public class LegExerciseApiControllerIntTests {
 
     @BeforeEach
     void setUp() {
-        client = RestClient.create("http://localhost:" + randomServerPort);
+        client = MockMvcWebTestClient
+                    .bindToApplicationContext(context)
+                    .apply(springSecurity())
+                    .defaultRequest(get("/").with(csrf()))
+                    .configureClient()
+                    .build();
     }
 
     @Test
     @Order(1)
     void shouldFindAll() {
-        List<LegExerciseDto> legExerciseDtos = client.get()
-                                            .uri("/api/leg-exercises")
-                                            .retrieve()
-                                            .body(new ParameterizedTypeReference<>() {});
-        assertEquals(13, legExerciseDtos.size());
+        client.get()
+                .uri("/api/leg-exercises")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(LegExerciseDto.class)
+                .hasSize(13);
     }
 
     @Test
     void shouldFindById() {
-        LegExerciseDto legExerciseDto = client.get()
-                                    .uri("/api/leg-exercises/1")
-                                    .retrieve()
-                                    .body(LegExerciseDto.class);
-        assertAll(
-            () -> assertEquals(1, (int)legExerciseDto.id()),
-            () -> assertEquals(LegExerciseType.SQUAT, legExerciseDto.legExerciseType()),
-            () -> assertEquals(LocalDateTime.parse("2026-01-17T10:00:00"), legExerciseDto.startedOn()),
-            () -> assertEquals(10, (int)legExerciseDto.count())
-        );
+        client.get()
+                .uri("/api/leg-exercises/1")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.id").isEqualTo(1)
+                .jsonPath("$.legExerciseType").isEqualTo(LegExerciseType.SQUAT)
+                .jsonPath("$.startedOn").isEqualTo(LocalDateTime.parse("2026-01-17T10:00:00"))
+                .jsonPath("$.count").isEqualTo(10);
     }
 
     // @Test
@@ -96,10 +101,9 @@ public class LegExerciseApiControllerIntTests {
 
     @Test
     void shouldDelete() {
-        ResponseEntity<Void> responseEntity = client.delete()
-                                                .uri("/api/leg-exercises/2")
-                                                .retrieve()
-                                                .toBodilessEntity();
-        assertEquals(204, responseEntity.getStatusCode().value());
+        client.delete()
+                .uri("/api/leg-exercises/2")
+                .exchange()
+                .expectStatus().isNoContent();
     }
 }
