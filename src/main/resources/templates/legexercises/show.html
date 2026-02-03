@@ -105,32 +105,10 @@
                             <div class="count-badge mb-3" th:text="${legExercise.count} + ' repetitions'">0 repetitions</div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <div class="detail-label">Exercise ID</div>
-                                <div class="detail-value" th:text="${legExercise.id}">0</div>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <div class="detail-label">Start Date & Time</div>
-                                <div class="detail-value" th:text="${#temporals.format(legExercise.startedOn, 'MMM dd, yyyy HH:mm')}">Date</div>
-                            </div>
-                        </div>
-
-                        <div class="user-info">
-                            <div class="detail-label">Workout User</div>
-                            <div class="detail-value" th:text="${legExercise.workoutUser.email}">User Email</div>
-                            <div class="text-muted" th:text="'ID: ' + ${legExercise.workoutUser.id}">User ID</div>
-                        </div>
-
-                        <div class="timestamp-info">
+                        <div class="timestamp-info text-center">
                             <div class="detail-label">Record Information</div>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <small>Created: <span th:text="${#temporals.format(legExercise.startedOn, 'MMM dd, yyyy HH:mm')}">Date</span></small>
-                                </div>
-                                <div class="col-md-6">
-                                    <small>Last Updated: <span th:text="${#temporals.format(legExercise.startedOn, 'MMM dd, yyyy HH:mm')}">Date</span></small>
-                                </div>
+                                <small>Start Date & Time: <span th:text="${#temporals.format(legExercise.startedOn, 'MMM dd, yyyy HH:mm')}">Date</span></small>
                             </div>
                         </div>
 
