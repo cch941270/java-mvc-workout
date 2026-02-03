@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -18,6 +19,7 @@ import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -64,6 +66,7 @@ public class LegExerciseApiControllerTests {
     }
 
     @Test
+    @WithMockUser
     void shouldFindAll() throws Exception {
         when(service.findAll()).thenReturn(legExerciseDtos);
         mvc.perform(get("/api/leg-exercises"))
@@ -73,6 +76,7 @@ public class LegExerciseApiControllerTests {
     }
 
     @Test
+    @WithMockUser
     void shouldFindById() throws Exception {
         LegExerciseDto legExerciseDto = legExerciseDtos.get(0);
         when(service.findById(ArgumentMatchers.anyInt())).thenReturn(Optional.of(legExerciseDto));
@@ -84,6 +88,7 @@ public class LegExerciseApiControllerTests {
     }
 
     @Test
+    @WithMockUser
     void shouldCreate() throws Exception {
         var legExercise = new LegExercise(
             null,
@@ -93,12 +98,14 @@ public class LegExerciseApiControllerTests {
             workoutUser
         );
         mvc.perform(post("/api/leg-exercises")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(legExercise))
                     ).andExpect(status().isCreated());
     }
 
     @Test
+    @WithMockUser
     void shouldUpdate() throws Exception {
         var legExercise = new LegExercise(
             1,
@@ -108,14 +115,17 @@ public class LegExerciseApiControllerTests {
             workoutUser
         );
         mvc.perform(put("/api/leg-exercises/1")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(legExercise))
                     ).andExpect(status().isNoContent());
     }
 
     @Test
+    @WithMockUser
     void shouldDelete() throws Exception {
-        mvc.perform(delete("/api/leg-exercises/1"))
+        mvc.perform(delete("/api/leg-exercises/1")
+                .with(csrf()))
                 .andExpect(status().isNoContent());
     }
 }
