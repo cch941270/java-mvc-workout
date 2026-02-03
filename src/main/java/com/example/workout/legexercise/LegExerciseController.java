@@ -28,13 +28,13 @@ public class LegExerciseController {
         this.legExerciseService = legExerciseService;
     }
 
-    @GetMapping("/")
+    @GetMapping({"", "/"})
     public String indexPage(Model model) {
         model.addAttribute("allLegExercises", legExerciseService.findAll());
         return "legexercise/index";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping({"/{id}", "/{id}/"})
     LegExerciseDto findById(@PathVariable Integer id) {
         Optional<LegExerciseDto> legExerciseDto = legExerciseService.findById(id);
         if (legExerciseDto.isEmpty()) {
@@ -44,19 +44,19 @@ public class LegExerciseController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("")
+    @PostMapping({"", "/"})
     void create(@Valid @RequestBody LegExercise legExercise) {
         legExerciseRepository.save(legExercise);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PutMapping("/{id}")
+    @PutMapping({"/{id}", "/{id}/"})
     void update(@Valid @RequestBody LegExercise legExercise, @PathVariable Integer id) {
         legExerciseRepository.save(legExercise);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{id}")
+    @DeleteMapping({"/{id}", "/{id}/"})
     void delete(@PathVariable Integer id) {
         legExerciseRepository.deleteById(id);
     }

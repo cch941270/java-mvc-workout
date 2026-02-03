@@ -27,7 +27,7 @@ public class WorkoutUserController {
         this.service = service;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping({"/{id}", "/{id}/"})
     public WorkoutUserDto findById(@PathVariable Long id) {
         Optional<WorkoutUserDto> userDto = service.findById(id);
         if (userDto.isEmpty()) {
@@ -37,19 +37,19 @@ public class WorkoutUserController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("")
+    @PostMapping({"", "/"})
     void create(@Valid @RequestBody WorkoutUserPlain user) {
         service.createWorkoutUser(user);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PutMapping("/{id}")
+    @PutMapping({"/{id}", "/{id}/"})
     void update(@Valid @RequestBody WorkoutUser user, @PathVariable Integer id) {
         repository.save(user);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{id}")
+    @DeleteMapping({"/{id}", "/{id}/"})
     void delete(@PathVariable Long id) {
         repository.deleteById(id);
     }
