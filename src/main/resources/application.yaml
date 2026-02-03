@@ -4,6 +4,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
 logging:
   level:
     sql: DEBUG

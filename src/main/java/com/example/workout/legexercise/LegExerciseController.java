@@ -80,7 +80,6 @@ public class LegExerciseController {
         exerciseToUpdate.setLegExerciseType(legExercise.getLegExerciseType());
         exerciseToUpdate.setStartedOn(legExercise.getStartedOn());
         exerciseToUpdate.setCount(legExercise.getCount());
-        exerciseToUpdate.setWorkoutUser(legExercise.getWorkoutUser());
         legExerciseRepository.save(exerciseToUpdate);
         redirectAttributes.addFlashAttribute("success", "Leg exercise updated successfully!");
         return "redirect:/leg-exercises/{id}";

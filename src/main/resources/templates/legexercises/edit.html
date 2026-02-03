@@ -47,13 +47,7 @@
                         <p class="text-muted">Update the details of your leg exercise</p>
                     </div>
 
-                    <div class="exercise-info">
-                        <p><strong>Exercise ID:</strong> <span th:text="${legExercise.id}">0</span></p>
-                        <p><strong>Created:</strong> <span th:text="${#temporals.format(legExercise.startedOn, 'MMM dd, yyyy HH:mm')}">Date</span></p>
-                    </div>
-
-                    <form th:action="@{/leg-exercises/{id}(id=${legExercise.id})}" th:object="${legExercise}" method="POST">
-                        <input type="hidden" name="_method" value="PUT">
+                    <form th:action="@{/leg-exercises/{id}(id=${legExercise.id})}" th:object="${legExercise}" th:method="PUT">
                         
                         <div class="mb-3">
                             <label for="legExerciseType" class="form-label">Exercise Type</label>
@@ -75,18 +69,6 @@
                             <label for="count" class="form-label">Count (Repetitions)</label>
                             <input type="number" th:field="*{count}" class="form-control" id="count" min="1" required>
                             <div class="form-text">Enter the number of repetitions completed</div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="workoutUser" class="form-label">Workout User</label>
-                            <select th:field="*{workoutUser}" class="form-select" id="workoutUser" required>
-                                <option value="">Select user</option>
-                                <option th:each="user : ${workoutUsers}" 
-                                        th:value="${user}" 
-                                        th:text="${user.email}"
-                                        th:selected="${legExercise.workoutUser == user}">User</option>
-                            </select>
-                            <div class="form-text">Select the user who performed this exercise</div>
                         </div>
 
                         <div class="d-flex gap-2">

@@ -2,6 +2,8 @@ package com.example.workout.legexercise;
 
 import java.time.LocalDateTime;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -26,6 +28,8 @@ public class LegExercise {
     private Integer id;
     @Enumerated(EnumType.STRING)
     private LegExerciseType legExerciseType;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm")
     private LocalDateTime startedOn;
     @Positive
     private Integer count;
