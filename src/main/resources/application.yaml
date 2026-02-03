@@ -7,3 +7,9 @@ spring:
 logging:
   level:
     sql: DEBUG
+server:
+  tomcat:
+    accesslog:
+      enabled: true
+      directory:  # Absolute Path
+      pattern: common
