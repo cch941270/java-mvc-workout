@@ -35,9 +35,10 @@ public class WorkoutUser implements UserDetails{
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "workout_users_id_seq")
     @SequenceGenerator(name = "workout_users_id_seq", sequenceName = "workout_users_id_seq", allocationSize = 1)
     private Long id;
+    @Column(unique = true)
     private String email;
+    @Column(unique = true)
     private String username;
-    @Column(name = "password")
     private String password;
     @OneToMany(mappedBy = "workoutUser", cascade = CascadeType.ALL)
     private List<LegExercise> legExercises;
