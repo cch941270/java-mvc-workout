@@ -1,5 +1,5 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -85,29 +85,22 @@
                 class="dropdown-menu dropdown-menu-end"
                 aria-labelledby="navbarDropdownMenuLink"
               >
-                <li><a class="dropdown-item" href="/login">Log in</a></li>
-                <li><a class="dropdown-item" href="/logout">Log out</a></li>
+                <li sec:authorize="isAnonymous()">
+                  <a class="dropdown-item" href="/login">Log in</a>
+                </li>
+                <li sec:authorize="isAuthenticated()">
+                  <a class="dropdown-item" href="/logout">Log out</a>
+                </li>
                 <li>
                   <hr class="dropdown-divider" />
                 </li>
-                <li>
-                  <a class="dropdown-item" href="/workout-users/new"
+                <li sec:authorize="isAnonymous()">
+                  <a class="dropdown-item" href="/users/new"
                     >Create account</a
                   >
                 </li>
-                <li>
-                  <a
-                    class="dropdown-item"
-                    href="/workout-users/{id}/edit(id=${workoutUser.id})"
-                    >Edit account</a
-                  >
-                </li>
-                <li>
-                  <a
-                    class="dropdown-item"
-                    href="/workout-users/{id}(id=${workoutUser.id})"
-                    >Account detail</a
-                  >
+                <li sec:authorize="isAuthenticated()">
+                  <a class="dropdown-item" href="/users/">View Account</a>
                 </li>
               </ul>
             </li>
