@@ -1,14 +1,19 @@
 Start: `./mvnw spring-boot:run` <br>
 Test: `./mvnw test`
+<hr>
+Entry point: http://localhost:8080/
 
-Available pages:
-- [/leg-exercises](http://localhost:8080/leg-exercises)
-- [/leg-exercises/new](http://localhost:8080/leg-exercises/new)
-- http://localhost:8080/leg-exercises/{id}/edit
-- http://localhost:8080/leg-exercises/{id}
-- [/users/new](http://localhost:8080/users/new)
-- http://localhost:8080/users/{id}/edit
-- http://localhost:8080/users/{id}
+Sample user1:
+```
+username: user1
+password: password1
+```
+Sample user2:
+```
+username: user2
+password password2
+```
+<hr>
 
 Available API endpoints:
 | Action | Method | URL|
@@ -23,10 +28,13 @@ Available API endpoints:
 | Update | PUT | http://localhost:8080/api/workout-users/{id} |
 | Delete | DELETE | http://localhost:8080/api/workout-users/{id} |
 
+<hr>
+
 Dependency
-- Spring Data JPA for repository
+- Spring Data JPA
 - Validation
 - Docker Compose Support for running postgreSQL database in docker
-- Flyway migration for database migration
-- Spring security for password encryption
+- Spring security
+- Thymeleaf
+- Flyway
 - Testcontainers
