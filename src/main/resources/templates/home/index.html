@@ -1,0 +1,158 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leg Exercises</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+    <th:block th:insert="~{fragments/header :: header-styles}"></th:block>
+    <style>
+      :root {
+        --dark-bg: #1a1a1a;
+        --darker-bg: #0d0d0d;
+        --dark-text: #e0e0e0;
+        --dark-accent: #4a9eff;
+        --dark-success: #3cb371;
+      }
+
+      body {
+        background-color: var(--dark-bg);
+        color: var(--dark-text);
+      }
+
+      .exercise-card {
+        background-color: var(--darker-bg);
+        border: 1px solid #333;
+        transition: transform 0.2s;
+      }
+      .exercise-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--dark-accent);
+      }
+      .exercise-type {
+        font-weight: 600;
+        color: var(--dark-text);
+      }
+      .exercise-count {
+        font-size: 1.2rem;
+        color: var(--dark-accent);
+      }
+      .exercise-date {
+        color: #888;
+        font-size: 0.9rem;
+      }
+      .btn-add {
+        background-color: var(--dark-success);
+        border-color: var(--dark-success);
+      }
+      .btn-add:hover {
+        background-color: #2d8a53;
+        border-color: #2d8a53;
+      }
+      .card {
+        background-color: var(--darker-bg);
+        border: 1px solid #333;
+        color: var(--dark-text);
+      }
+      .card-footer {
+        background-color: var(--darker-bg);
+        border-top: 1px solid #333;
+      }
+      .alert-info {
+        background-color: #1a1a1a;
+        border: 1px solid #333;
+        color: var(--dark-text);
+      }
+      .alert-info a {
+        color: var(--dark-accent);
+      }
+      .btn-outline-primary {
+        color: var(--dark-accent);
+        border-color: var(--dark-accent);
+      }
+      .btn-outline-primary:hover {
+        background-color: var(--dark-accent);
+        border-color: var(--dark-accent);
+      }
+      .btn-outline-info {
+        color: #17a2b8;
+        border-color: #17a2b8;
+      }
+      .btn-outline-info:hover {
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+      }
+      .btn-outline-danger {
+        color: #dc3545;
+        border-color: #dc3545;
+      }
+      .btn-outline-danger:hover {
+        background-color: #dc3545;
+        border-color: #dc3545;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <div class="container mt-4">
+      <div class="row mb-4">
+        <div th:replace="~{fragments/message :: message}"></div>
+
+        <div class="col-12">
+          <h1 class="text-center mb-3">Leg Exercises</h1>
+          <div class="text-center mb-4" sec:authorize="isAnonymous()">
+            <a th:href="@{/users/new}" class="btn btn-add btn-lg">Join us</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <div
+            th:if="${#lists.isEmpty(legExercises)}"
+            class="alert alert-info text-center"
+          >
+            No leg exercises found.
+            <a th:href="@{/leg-exercises/new}">Add your first exercise</a>.
+          </div>
+        </div>
+      </div>
+
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <div th:each="exercise : ${legExercises}" class="col">
+          <div class="card exercise-card h-100">
+            <div class="card-body">
+              <h5
+                class="card-title exercise-type"
+                th:text="${exercise.legExerciseType}"
+              >
+                Exercise Type
+              </h5>
+              <p class="card-text">
+                <span class="exercise-count" th:text="${exercise.count}"
+                  >0</span
+                >
+                repetitions
+              </p>
+              <p class="card-text exercise-date">
+                Started on:
+                <span
+                  th:text="${#temporals.format(exercise.startedOn, 'MMM dd, yyyy HH:mm')}"
+                  >Date</span
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

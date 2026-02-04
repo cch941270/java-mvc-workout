@@ -2,6 +2,8 @@ package com.example.workout.workoutuser;
 
 import java.util.Optional;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,19 +24,11 @@ public class WorkoutUserController {
     private final WorkoutUserRepository repository;
     private final WorkoutUserService service;
 
-    // @GetMapping({"", "/"})
-    // public String index(Model model) {
-    //     // This could be added later if needed
-    //     return "redirect:/";
-    // }
-
-    @GetMapping({"/{id}", "/{id}/"})
-    public String show(@PathVariable Long id, Model model) {
-        Optional<WorkoutUserDto> workoutUserDto = service.findById(id);
-        if (workoutUserDto.isEmpty()) {
-            return "redirect:/leg-exercises";
-        }
-        model.addAttribute("workoutUser", workoutUserDto.get());
+    @GetMapping({"", "/"})
+    public String show(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        WorkoutUser workoutUser = repository.findByUsername(userDetails.getUsername()).get();
+        WorkoutUserDto workoutUserDto = service.findById(workoutUser.getId()).get();
+        model.addAttribute("workoutUser", workoutUserDto);
         return "workoutusers/show";
     }
 

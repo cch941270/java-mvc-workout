@@ -3,6 +3,8 @@ package com.example.workout.legexercise;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,9 +16,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.workout.workoutuser.WorkoutUser;
-import com.example.workout.workoutuser.WorkoutUserRepository;
-
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -25,19 +24,19 @@ import lombok.RequiredArgsConstructor;
 public class LegExerciseController {
     private final LegExerciseRepository legExerciseRepository;
     private final LegExerciseService legExerciseService;
-    private final WorkoutUserRepository workoutUserRepository;
 
     @GetMapping({"", "/"})
-    public String index(Model model) {
-        List<LegExercise> legExercises = legExerciseService.findAllSortedByStartedOn();
+    public String index(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        List<LegExercise> legExercises = legExerciseService.findAllByUsernameSorted(userDetails.getUsername());
         model.addAttribute("legExercises", legExercises);
         return "legexercises/index";
     }
 
     @GetMapping({"/{id}", "/{id}/"})
-    public String show(@PathVariable Integer id, Model model) {
-        Optional<LegExercise> legExercise = legExerciseRepository.findById(id);
+    public String show(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Integer id, Model model, RedirectAttributes redirectAttributes) {
+        Optional<LegExercise> legExercise = legExerciseService.findByUsernameAndId(userDetails.getUsername(), id);
         if (legExercise.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "Leg exercise not found.");
             return "redirect:/leg-exercises";
         }
         model.addAttribute("legExercise", legExercise.get());
@@ -52,18 +51,17 @@ public class LegExerciseController {
     }
 
     @PostMapping({"", "/"})
-    public String create(@ModelAttribute LegExercise legExercise, RedirectAttributes redirectAttributes) {
-        WorkoutUser workoutUser = workoutUserRepository.findById((long)1).get();
-        legExercise.setWorkoutUser(workoutUser);
-        legExerciseRepository.save(legExercise);
+    public String create(@AuthenticationPrincipal UserDetails userDetails, @ModelAttribute LegExercise legExercise, RedirectAttributes redirectAttributes) {
+        legExerciseService.create(userDetails.getUsername(), legExercise);
         redirectAttributes.addFlashAttribute("success", "Leg exercise created successfully!");
         return "redirect:/leg-exercises";
     }
 
     @GetMapping({"/{id}/edit", "/{id}/edit/"})
-    public String editForm(@PathVariable Integer id, Model model) {
-        Optional<LegExercise> legExercise = legExerciseRepository.findById(id);
+    public String editForm(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Integer id, Model model, RedirectAttributes redirectAttributes) {
+        Optional<LegExercise> legExercise = legExerciseService.findByUsernameAndId(userDetails.getUsername(), id);
         if (legExercise.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "Leg exercise not found.");
             return "redirect:/leg-exercises";
         }
         model.addAttribute("legExercise", legExercise.get());
@@ -71,24 +69,26 @@ public class LegExerciseController {
     }
 
     @PutMapping({"/{id}", "/{id}/"})
-    public String update(@PathVariable Integer id, @ModelAttribute LegExercise legExercise, RedirectAttributes redirectAttributes) {
-        Optional<LegExercise> existingExercise = legExerciseRepository.findById(id);
-        if (existingExercise.isEmpty()) {
+    public String update(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Integer id, @ModelAttribute LegExercise updatedLegExercise, RedirectAttributes redirectAttributes) {
+        Optional<LegExercise> legExercise = legExerciseService.findByUsernameAndId(userDetails.getUsername(), id);
+        if (legExercise.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "Leg exercise not found.");
             return "redirect:/leg-exercises";
         }
-        LegExercise exerciseToUpdate = existingExercise.get();
-        exerciseToUpdate.setLegExerciseType(legExercise.getLegExerciseType());
-        exerciseToUpdate.setStartedOn(legExercise.getStartedOn());
-        exerciseToUpdate.setCount(legExercise.getCount());
-        legExerciseRepository.save(exerciseToUpdate);
+        legExerciseService.update(legExercise.get(), updatedLegExercise);
         redirectAttributes.addFlashAttribute("success", "Leg exercise updated successfully!");
         return "redirect:/leg-exercises/{id}";
     }
 
     @DeleteMapping({"/{id}", "/{id}/"})
-    public String destroy(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
-        legExerciseRepository.deleteById(id);
-        redirectAttributes.addFlashAttribute("success", "Leg exercise deleted successfully!");
+    public String destroy(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        Optional<LegExercise> legExercise = legExerciseService.findByUsernameAndId(userDetails.getUsername(), id);
+        if (legExercise.isPresent()) {
+            legExerciseRepository.deleteById(id);
+            redirectAttributes.addFlashAttribute("success", "Leg exercise deleted successfully!");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Leg exercise not found.");
+        }
         return "redirect:/leg-exercises";
     }
 }

@@ -1,0 +1,1 @@
+ALTER TABLE workout_users RENAME hashed_password TO password;

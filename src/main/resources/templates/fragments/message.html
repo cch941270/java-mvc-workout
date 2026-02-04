@@ -1,0 +1,8 @@
+<div th:fragment="message">
+    <div th:if="${success}" class="col-12 alert alert-success">
+        <p th:text="${success}"></p>
+    </div>
+    <div th:if="${error}" class="col-12 alert alert-danger">
+        <p th:text="${error}"></p>
+    </div>
+</div>
