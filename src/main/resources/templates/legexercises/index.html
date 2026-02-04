@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -106,8 +106,11 @@
 
             <div class="col-12">
                 <h1 class="text-center mb-3">Leg Exercises</h1>
-                <div class="text-center mb-4">
+                <div class="text-center mb-4" sec:authorize="isAuthenticated()">
                     <a th:href="@{/leg-exercises/new}" class="btn btn-add btn-lg">Add New Exercise</a>
+                </div>
+                <div class="text-center mb-4" sec:authorize="isAnonymous()">
+                    <a th:href="@{/users/new}" class="btn btn-add btn-lg">Join us</a>
                 </div>
             </div>
         </div>
@@ -132,7 +135,7 @@
                             Started on: <span th:text="${#temporals.format(exercise.startedOn, 'MMM dd, yyyy HH:mm')}">Date</span>
                         </p>
                     </div>
-                    <div class="card-footer bg-transparent border-0">
+                    <div class="card-footer bg-transparent border-0" sec:authorize="isAuthenticated()">
                         <div class="d-flex gap-2">
                             <a th:href="@{/leg-exercises/{id}/edit(id=${exercise.id})}" class="btn btn-sm btn-outline-primary">Edit</a>
                             <a th:href="@{/leg-exercises/{id}(id=${exercise.id})}" class="btn btn-sm btn-outline-info">View</a>
