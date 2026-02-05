@@ -90,11 +90,11 @@
                     </div>
 
                     <div class="exercise-info">
-                        <p><strong>User ID:</strong> <span th:text="${workoutUser.id}">0</span></p>
+                        <p><strong>User:</strong> <span th:text="${workoutUser.username}">User</span></p>
                         <p><strong>Email:</strong> <span th:text="${workoutUser.email}">user@example.com</span></p>
                     </div>
 
-                    <form th:action="@{/users/{id}(id=${workoutUser.id})}" th:object="${workoutUser}" th:method="PUT">
+                    <form th:action="@{/users/}" th:object="${workoutUser}" th:method="PUT">
 
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
@@ -102,8 +102,14 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="hashedPassword" class="form-label">New Password</label>
-                            <input type="password" th:field="*{hashedPassword}" class="form-control" id="hashedPassword">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" th:field="*{username}" class="form-control" id="username" required>
+                            <div class="form-text">To be implemented</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">New Password</label>
+                            <input type="password" th:field="*{password}" class="form-control" id="password">
                             <div class="form-text">Leave blank to keep current password</div>
                         </div>
 

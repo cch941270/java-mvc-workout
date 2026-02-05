@@ -156,7 +156,7 @@
                         </div>
 
                         <div class="d-flex gap-2 mt-4">
-                            <a th:href="@{/users/{id}/edit(id=${workoutUser.id})}" class="btn btn-primary">Edit User</a>
+                            <a th:href="@{/users/edit}" class="btn btn-primary">Edit User</a>
                             <a th:href="@{/}" class="btn btn-secondary">Back to List</a>
                             <form th:action="@{/users/{id}(id=${workoutUser.id})}" method="POST" style="display: inline;">
                                 <input type="hidden" name="_method" value="DELETE">

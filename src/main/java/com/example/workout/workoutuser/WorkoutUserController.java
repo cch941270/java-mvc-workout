@@ -45,9 +45,9 @@ public class WorkoutUserController {
         return "redirect:/login";
     }
 
-    @GetMapping({"/{id}/edit", "/{id}/edit/"})
-    public String editForm(@PathVariable Long id, Model model) {
-        Optional<WorkoutUser> workoutUser = repository.findById(id);
+    @GetMapping({"/edit", "/edit/"})
+    public String editForm(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        Optional<WorkoutUser> workoutUser = service.findByUsername(userDetails.getUsername());
         if (workoutUser.isEmpty()) {
             return "redirect:/leg-exercises";
         }
@@ -55,12 +55,11 @@ public class WorkoutUserController {
         return "workoutusers/edit";
     }
 
-    @PutMapping({"/{id}", "/{id}/"})
-    public String update(@PathVariable Long id, @ModelAttribute WorkoutUser workoutUser, RedirectAttributes redirectAttributes) {
-        workoutUser.setId(id);
-        repository.save(workoutUser);
+    @PutMapping({"", "/"})
+    public String update(@AuthenticationPrincipal UserDetails userDetails, @ModelAttribute WorkoutUser updatedWorkoutUser, RedirectAttributes redirectAttributes) {
+        service.update(userDetails.getUsername(), updatedWorkoutUser);
         redirectAttributes.addFlashAttribute("success", "User updated successfully!");
-        return "redirect:/users/{id}";
+        return "redirect:/users";
     }
 
     @DeleteMapping({"/{id}", "/{id}/"})
