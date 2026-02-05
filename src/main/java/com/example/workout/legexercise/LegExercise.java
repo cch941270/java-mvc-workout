@@ -29,7 +29,7 @@ public class LegExercise {
     @Enumerated(EnumType.STRING)
     private LegExerciseType legExerciseType;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime startedOn;
     @Positive
     private Integer count;
