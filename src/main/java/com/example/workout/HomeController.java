@@ -28,4 +28,10 @@ public class HomeController {
         model.addAttribute("legExercises", legExercises);
         return "home/index";
     }
+
+    @GetMapping("/login")
+    public String customLogin() {
+        return "login";
+    }
+
 }

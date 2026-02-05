@@ -23,9 +23,11 @@ public class SecurityConfig {
             .authorizeHttpRequests(requests -> requests
                 .requestMatchers("/api/**").permitAll()
                 .requestMatchers("/", "/users/new").permitAll()
+                .requestMatchers("/css/*").permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
+                .loginPage("/login")
                 .permitAll()
             )
             .logout(logout -> logout
