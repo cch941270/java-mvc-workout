@@ -46,6 +46,7 @@ public class LegExerciseRepositoryTests {
     public void setUp() {
         workoutUser = new WorkoutUser(
             "JxGw8@example.com",
+            "JxGw8",
             "password"
         );
         workoutUserRepository.save(workoutUser);

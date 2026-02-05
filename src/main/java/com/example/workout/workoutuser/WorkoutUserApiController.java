@@ -39,7 +39,7 @@ public class WorkoutUserApiController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
     void create(@Valid @RequestBody WorkoutUserPlain user) {
-        service.createWorkoutUser(user);
+        service.create(user);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
