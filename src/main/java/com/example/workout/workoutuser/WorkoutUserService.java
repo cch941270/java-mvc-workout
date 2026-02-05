@@ -49,6 +49,11 @@ public class WorkoutUserService {
         repository.save(workoutUser);
     }
 
+    void delete(String username) {
+        WorkoutUser workoutUser = repository.findByUsername(username).get();
+        repository.delete(workoutUser);
+    }
+
     WorkoutUserDto convertToDto(WorkoutUser workoutUser) {
         return new WorkoutUserDto(
             workoutUser.getId(),

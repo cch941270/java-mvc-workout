@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class WorkoutUserController {
-    private final WorkoutUserRepository repository;
     private final WorkoutUserService service;
 
     @GetMapping({"", "/"})
@@ -61,10 +59,10 @@ public class WorkoutUserController {
         return "redirect:/users";
     }
 
-    @DeleteMapping({"/{id}", "/{id}/"})
-    public String destroy(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        repository.deleteById(id);
-        redirectAttributes.addFlashAttribute("success", "User deleted successfully!");
-        return "redirect:/leg-exercises";
+    @DeleteMapping({"", "/"})
+    public String destroy(@AuthenticationPrincipal UserDetails userDetails, RedirectAttributes redirectAttributes) {
+        service.delete(userDetails.getUsername());
+        redirectAttributes.addFlashAttribute("success", "User deleted successfully! Sorry to see you go.");
+        return "redirect:/";
     }
 }
