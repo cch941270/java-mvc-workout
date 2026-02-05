@@ -39,8 +39,7 @@ public class LegExerciseService {
 
     Optional<LegExercise> findByUsernameAndId(String username, Integer id) {
         WorkoutUser workoutUser = workoutUserRepository.findByUsername(username).get();
-        Optional<LegExercise> legExercise = workoutUser.getLegExercises().stream().filter(e -> e.getId() == id).findFirst();
-        return legExercise;
+        return repository.findByIdAndWorkoutUserId(id, workoutUser.getId());
     }
 
     void create(String username, LegExercise legExercise) {
