@@ -40,7 +40,7 @@ public class WorkoutUserController {
 
     @PostMapping({"", "/"})
     public String create(@ModelAttribute WorkoutUserPlain workoutUserPlain, RedirectAttributes redirectAttributes) {
-        service.createWorkoutUser(workoutUserPlain);
+        service.create(workoutUserPlain);
         redirectAttributes.addFlashAttribute("success", "User created successfully!");
         return "redirect:/login";
     }

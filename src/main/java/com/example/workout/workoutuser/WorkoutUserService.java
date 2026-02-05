@@ -28,7 +28,7 @@ public class WorkoutUserService {
         return findByUsername(username).map(this :: convertToDto);
     }
 
-    void createWorkoutUser(WorkoutUserPlain workoutUserPlain) {
+    void create(WorkoutUserPlain workoutUserPlain) {
         WorkoutUser workoutUser = new WorkoutUser(
             workoutUserPlain.email(),
             workoutUserPlain.username(),
