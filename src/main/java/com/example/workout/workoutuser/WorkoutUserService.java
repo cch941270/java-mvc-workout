@@ -23,6 +23,7 @@ public class WorkoutUserService {
     public void createWorkoutUser(WorkoutUserPlain workoutUserPlain) {
         WorkoutUser workoutUser = new WorkoutUser(
             workoutUserPlain.email(),
+            workoutUserPlain.username(),
             passwordEncoder.encode(workoutUserPlain.plainPassword())
         );
         repository.save(workoutUser);

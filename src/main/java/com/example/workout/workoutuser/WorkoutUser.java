@@ -43,8 +43,9 @@ public class WorkoutUser implements UserDetails{
     @OneToMany(mappedBy = "workoutUser", cascade = CascadeType.ALL)
     private List<LegExercise> legExercises;
 
-    public WorkoutUser(String email, String password) {
+    public WorkoutUser(String email, String username, String password) {
         this.email = email;
+        this.username = username;
         this.password = password;
     }
 

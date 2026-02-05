@@ -42,7 +42,7 @@ public class WorkoutUserController {
     public String create(@ModelAttribute WorkoutUserPlain workoutUserPlain, RedirectAttributes redirectAttributes) {
         service.createWorkoutUser(workoutUserPlain);
         redirectAttributes.addFlashAttribute("success", "User created successfully!");
-        return "redirect:/leg-exercises";
+        return "redirect:/login";
     }
 
     @GetMapping({"/{id}/edit", "/{id}/edit/"})
