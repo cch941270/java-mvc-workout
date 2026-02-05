@@ -127,7 +127,7 @@
                 <div class="detail-card">
                     <div class="card-body p-4">
                         <div class="text-center mb-4">
-                            <h1 class="exercise-type">User</h1>
+                            <h1 class="exercise-type" th:text="${workoutUser.username}">User</h1>
                             <div class="count-badge mb-3" th:text="${workoutUser.email}">user@example.com</div>
                         </div>
 

@@ -29,10 +29,11 @@ public class WorkoutUserService {
         repository.save(workoutUser);
     }
 
-    private WorkoutUserDto convertToDto(WorkoutUser workoutUser) {
+    public WorkoutUserDto convertToDto(WorkoutUser workoutUser) {
         return new WorkoutUserDto(
             workoutUser.getId(),
             workoutUser.getEmail(),
+            workoutUser.getUsername(),
             workoutUser.getLegExercises()
                         .stream()
                         .map(legExercise -> legExerciseService.convertToDto(legExercise))

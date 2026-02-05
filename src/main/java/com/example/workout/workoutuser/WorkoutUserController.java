@@ -27,7 +27,7 @@ public class WorkoutUserController {
     @GetMapping({"", "/"})
     public String show(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         WorkoutUser workoutUser = repository.findByUsername(userDetails.getUsername()).get();
-        WorkoutUserDto workoutUserDto = service.findById(workoutUser.getId()).get();
+        WorkoutUserDto workoutUserDto = service.convertToDto(workoutUser);
         model.addAttribute("workoutUser", workoutUserDto);
         return "workoutusers/show";
     }
