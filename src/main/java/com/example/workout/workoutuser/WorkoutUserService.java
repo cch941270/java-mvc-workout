@@ -62,6 +62,7 @@ public class WorkoutUserService {
     void delete(String username) {
         WorkoutUser workoutUser = repository.findByUsername(username).get();
         repository.delete(workoutUser);
+        SecurityContextHolder.getContext().setAuthentication(null);
     }
 
 
