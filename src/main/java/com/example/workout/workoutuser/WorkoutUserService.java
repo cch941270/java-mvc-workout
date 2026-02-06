@@ -2,6 +2,11 @@ package com.example.workout.workoutuser;
 
 import java.util.Optional;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +20,7 @@ public class WorkoutUserService {
     private final WorkoutUserRepository repository;
     private final LegExerciseService legExerciseService;
     private final PasswordEncoder passwordEncoder;
+    private final UserDetailsService userDetailsService;
 
     Optional<WorkoutUserDto> findById(Long id) {
         return repository.findById(id).map(this :: convertToDto);
@@ -39,19 +45,36 @@ public class WorkoutUserService {
 
     void update(String username, WorkoutUser updatedWorkoutUser) {
         WorkoutUser workoutUser = repository.findByUsername(username).get();
-        workoutUser.setEmail(updatedWorkoutUser.getEmail());
-        // workoutUser.setUsername(updatedWorkoutUser.getUsername()); To be implemented
+        String updatedUsername = updatedWorkoutUser.getUsername();
         String updatedPassword = updatedWorkoutUser.getPassword();
+        workoutUser.setEmail(updatedWorkoutUser.getEmail());
+        workoutUser.setUsername(updatedUsername);
         if (!updatedPassword.isEmpty()) {
             String encodedPassword = passwordEncoder.encode(updatedPassword);
             workoutUser.setPassword(encodedPassword);
         }
         repository.save(workoutUser);
+        if (username != updatedUsername) {
+            refreshAuthentication(updatedUsername);
+        }
     }
 
     void delete(String username) {
         WorkoutUser workoutUser = repository.findByUsername(username).get();
         repository.delete(workoutUser);
+    }
+
+
+    void refreshAuthentication(String newUsername) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(newUsername);
+
+        Authentication newAuthentication = new UsernamePasswordAuthenticationToken(
+            userDetails,
+            userDetails.getPassword(),
+            userDetails.getAuthorities()
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(newAuthentication);
     }
 
     WorkoutUserDto convertToDto(WorkoutUser workoutUser) {
