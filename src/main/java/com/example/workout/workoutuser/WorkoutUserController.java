@@ -38,7 +38,7 @@ public class WorkoutUserController {
     @PostMapping({"", "/"})
     public String create(@ModelAttribute WorkoutUserPlain workoutUserPlain, RedirectAttributes redirectAttributes) {
         service.create(workoutUserPlain);
-        redirectAttributes.addFlashAttribute("success", "User created successfully!");
+        redirectAttributes.addFlashAttribute("success", "Account created successfully!");
         return "redirect:/login";
     }
 
@@ -55,14 +55,14 @@ public class WorkoutUserController {
     @PutMapping({"", "/"})
     public String update(@AuthenticationPrincipal UserDetails userDetails, @ModelAttribute WorkoutUser updatedWorkoutUser, RedirectAttributes redirectAttributes) {
         service.update(userDetails.getUsername(), updatedWorkoutUser);
-        redirectAttributes.addFlashAttribute("success", "User updated successfully!");
+        redirectAttributes.addFlashAttribute("success", "Account updated successfully!");
         return "redirect:/users";
     }
 
     @DeleteMapping({"", "/"})
     public String destroy(@AuthenticationPrincipal UserDetails userDetails, RedirectAttributes redirectAttributes) {
         service.delete(userDetails.getUsername());
-        redirectAttributes.addFlashAttribute("success", "User deleted successfully! Sorry to see you go.");
+        redirectAttributes.addFlashAttribute("success", "Account deleted successfully! Sorry to see you go.");
         return "redirect:/";
     }
 }
