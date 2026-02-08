@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -35,7 +36,8 @@ public class SecurityConfig {
             )
             .logout(logout -> logout
                 .permitAll()
-            );
+            )
+            .addFilterBefore(new CustomFilter(), AuthorizationFilter.class);
         return http.build();
     }
 }
