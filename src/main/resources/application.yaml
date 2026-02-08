@@ -12,6 +12,9 @@ logging:
   level:
     sql: DEBUG
 server:
+  error:
+    whitelabel:
+      enabled: false
   tomcat:
     accesslog:
       enabled: true
