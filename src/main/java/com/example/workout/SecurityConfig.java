@@ -36,8 +36,8 @@ public class SecurityConfig {
             )
             .logout(logout -> logout
                 .permitAll()
-            )
-            .addFilterBefore(new CustomFilter(), AuthorizationFilter.class);
+            );
+            // .addFilterBefore(new CustomFilter(), AuthorizationFilter.class);
         return http.build();
     }
 }
