@@ -25,6 +25,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/**").permitAll()
                 .requestMatchers("/", "/users/new").permitAll()
                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                .requestMatchers("/favicon.ico").permitAll()
                 .requestMatchers("/css/*").permitAll()
                 .anyRequest().authenticated()
             )
