@@ -11,9 +11,9 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import lombok.RequiredArgsConstructor;
-
 
 @Configuration
 @EnableWebSecurity
@@ -22,6 +22,11 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 
     private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+
+    @Bean
+    public HttpSessionEventPublisher httpSessionEventPublisher() {
+        return new HttpSessionEventPublisher();
+    }
 
     @Bean
     public SessionRegistry sessionRegistry() {
@@ -53,8 +58,17 @@ public class SecurityConfig {
             )
             .logout(logout -> logout
                 .permitAll()
-            );
+            )
+            .sessionManagement((sessionManagement) ->
+                sessionManagement
+                    .sessionConcurrency((sessionConcurrency) ->
+                        sessionConcurrency
+                            .maximumSessions(1)
+                            .expiredUrl("/login?expired")
+                            .sessionRegistry(sessionRegistry())
+            ));
             // .addFilterBefore(new CustomFilter(), AuthorizationFilter.class);
+
         return http.build();
     }
 }
