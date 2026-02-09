@@ -4,6 +4,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +36,12 @@ public class LegExerciseService {
         return legExercises;
     }
 
+    public Page<LegExercise> findPaginatedAndSorted(int pageNo) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "startedOn");
+        Pageable pageable = PageRequest.of(pageNo - 1, 9, sort);
+        return repository.findAll(pageable);
+    }
+
     Optional<LegExerciseDto> findById(Integer id) {
         return repository.findById(id).map(this :: convertToDto);
     }
@@ -53,6 +62,10 @@ public class LegExerciseService {
         legExercise.setStartedOn(updatedLegExercise.getStartedOn());
         legExercise.setCount(updatedLegExercise.getCount());
         repository.save(legExercise);
+    }
+
+    public void delete(Integer id) {
+        repository.deleteById(id);
     }
 
     public LegExerciseDto convertToDto(LegExercise legExercise) {
