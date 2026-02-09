@@ -2,6 +2,7 @@ package com.example.workout.workoutuser;
 
 import java.util.Optional;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -42,6 +43,7 @@ public class WorkoutUserController {
         return "redirect:/login";
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping({"/edit", "/edit/"})
     public String editForm(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         Optional<WorkoutUser> workoutUser = service.findByUsername(userDetails.getUsername());
@@ -52,6 +54,7 @@ public class WorkoutUserController {
         return "workoutusers/edit";
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PutMapping({"", "/"})
     public String update(@AuthenticationPrincipal UserDetails userDetails, @ModelAttribute WorkoutUser updatedWorkoutUser, RedirectAttributes redirectAttributes) {
         service.update(userDetails.getUsername(), updatedWorkoutUser);

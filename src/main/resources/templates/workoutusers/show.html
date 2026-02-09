@@ -156,9 +156,9 @@
                         </div>
 
                         <div class="d-flex gap-2 mt-4">
-                            <a th:href="@{/users/edit}" class="btn btn-primary">Edit User</a>
+                            <a sec:authorize="hasRole('USER')" th:href="@{/users/edit}" class="btn btn-primary">Edit User</a>
                             <a th:href="@{/}" class="btn btn-secondary">Back to List</a>
-                            <form th:action="@{/users}" th:method="DELETE" style="display: inline;">
+                            <form sec:authorize="hasRole('USER')" th:action="@{/users}" th:method="DELETE" style="display: inline;">
                                 <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete your account?')">Delete my account</button>
                             </form>
                         </div>
