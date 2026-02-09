@@ -2,6 +2,7 @@ package com.example.workout.workoutuser;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
@@ -50,6 +51,17 @@ public class WorkoutUserService {
         return repository.findByRoles_Name(roleType, pageable);
     }
 
+    public List<WorkoutUser> findAllOnline() {
+        List<Object> allPrincipals = sessionRegistry.getAllPrincipals();
+
+        List<Object> onlinePrincipals = allPrincipals.stream().filter(principal -> {
+            List<SessionInformation> sessions = sessionRegistry.getAllSessions(principal, false);
+            return !sessions.isEmpty();
+        }).collect(Collectors.toList());
+
+        return onlinePrincipals.stream().map(p -> (WorkoutUser) p).toList();
+    }
+
     void create(WorkoutUserPlain workoutUserPlain) {
         WorkoutUser workoutUser = new WorkoutUser(
             workoutUserPlain.email(),
@@ -81,12 +93,16 @@ public class WorkoutUserService {
         SecurityContextHolder.getContext().setAuthentication(null);
     }
 
-    public void delete(Long id) {
+    public void logout(Long id) {
         WorkoutUser workoutUser = repository.findById(id).get();
         List<SessionInformation> sessions = sessionRegistry.getAllSessions(workoutUser.getUsername(), false);
         for (SessionInformation session : sessions) {
             session.expireNow();
         }
+    }
+
+    public void delete(Long id) {
+        logout(id);
         repository.deleteById(id);
     }
 

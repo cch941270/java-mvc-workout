@@ -18,6 +18,7 @@ import com.example.workout.workoutuser.WorkoutUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -74,4 +75,19 @@ public class AdminController {
         redirectAttributes.addFlashAttribute("success", "Workout user deleted successfully!");
         return "redirect:/admin/users";
     }
+
+    @GetMapping({"online-users", "online-users/"})
+    public String listAllOnlineUsers(Model model) {
+        List<WorkoutUser> allOnlineUsers = workoutUserService.findAllOnline();
+        model.addAttribute("allOnlineUsers", allOnlineUsers);
+        return "admin/workoutusers/online-users";
+    }
+
+    @PostMapping({"users/{id}", "users/{id}/"})
+    public String logoutUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        workoutUserService.logout(id);
+        redirectAttributes.addFlashAttribute("success", "Logout user successfully!");
+        return "redirect:/admin/online-users";
+    }
+
 }
