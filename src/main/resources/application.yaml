@@ -10,7 +10,11 @@ spring:
         enabled: true
 logging:
   level:
+    org:
+      springframework:
+        security: DEBUG
     sql: DEBUG
+    web: DEBUG
 server:
   error:
     whitelabel:
