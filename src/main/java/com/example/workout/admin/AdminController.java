@@ -1,7 +1,6 @@
 package com.example.workout.admin;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -12,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.workout.legexercise.LegExercise;
 import com.example.workout.legexercise.LegExerciseDto;
 import com.example.workout.legexercise.LegExerciseService;
+import com.example.workout.workoutuser.WorkoutUser;
+import com.example.workout.workoutuser.WorkoutUserDto;
 import com.example.workout.workoutuser.WorkoutUserService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminController {
-    
+
     private final LegExerciseService legExerciseService;
     private final WorkoutUserService workoutUserService;
 
@@ -52,4 +53,25 @@ public class AdminController {
         return "redirect:/admin/leg-exercises";
     }
 
+    @GetMapping({"users", "users/"})
+    public String listAllUsers(
+        @RequestParam(defaultValue = "1") int pageNo,
+        Model model
+    ) {
+        Page<WorkoutUser> page = workoutUserService.findPaginatedAndSorted(pageNo);
+        List<WorkoutUserDto> workoutUsers = page.getContent().stream().map(w -> workoutUserService.convertToDto(w)).toList();
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("workoutUsers", workoutUsers);
+
+        return "admin/workoutusers/index";
+    }
+
+    @DeleteMapping({"users/{id}", "users/{id}/"})
+    public String deleteWorkoutUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        workoutUserService.delete(id);
+        redirectAttributes.addFlashAttribute("success", "Workout user deleted successfully!");
+        return "redirect:/admin/users";
+    }
 }
