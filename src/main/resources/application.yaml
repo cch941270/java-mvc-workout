@@ -16,6 +16,9 @@ logging:
     sql: DEBUG
     web: DEBUG
 server:
+  servlet:
+    session:
+      timeout: 60m
   error:
     whitelabel:
       enabled: false
