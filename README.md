@@ -1,8 +1,14 @@
 Start: `./mvnw spring-boot:run` <br>
 Test: `./mvnw test`
 <hr>
-Entry point: http://localhost:8080/
+User entry point: http://localhost:8080/ <br>
+Admin entry point: http://localhost:8080/admin/
 
+Sample admin:
+```
+username: admin
+password: password
+```
 Sample user1:
 ```
 username: user1
@@ -11,7 +17,7 @@ password: password1
 Sample user2:
 ```
 username: user2
-password password2
+password: password2
 ```
 <hr>
 
