@@ -8,6 +8,9 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+  docker:
+    compose:
+      lifecycle-management: start-only
 logging:
   level:
     org:
