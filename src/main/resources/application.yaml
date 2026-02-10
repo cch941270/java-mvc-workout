@@ -18,6 +18,7 @@ spring:
   session:
     redis:
       namespace: spring:session:workout
+      repository-type: indexed
 logging:
   level:
     org:
