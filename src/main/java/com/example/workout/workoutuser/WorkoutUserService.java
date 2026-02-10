@@ -1,7 +1,9 @@
 package com.example.workout.workoutuser;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,8 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.session.FindByIndexNameSessionRepository;
+import org.springframework.session.Session;
 import org.springframework.stereotype.Service;
 
 import com.example.workout.legexercise.LegExerciseService;
@@ -31,6 +35,7 @@ public class WorkoutUserService {
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;
     private final SessionRegistry sessionRegistry;
+    private final FindByIndexNameSessionRepository<? extends Session> sessions;
 
     Optional<WorkoutUserDto> findById(Long id) {
         return repository.findById(id).map(this :: convertToDto);
@@ -95,15 +100,27 @@ public class WorkoutUserService {
 
     public void logout(Long id) {
         WorkoutUser workoutUser = repository.findById(id).get();
-        List<SessionInformation> sessions = sessionRegistry.getAllSessions(workoutUser.getUsername(), false);
-        for (SessionInformation session : sessions) {
-            session.expireNow();
+        Collection<? extends Session> allUsersessions = getSessions(workoutUser.getUsername());
+        for (Session session : allUsersessions) {
+            removeSession(workoutUser.getUsername(), session.getId());
         }
     }
 
     public void delete(Long id) {
         logout(id);
         repository.deleteById(id);
+    }
+
+    Collection<? extends Session> getSessions(String principalName) {
+        Collection<? extends Session> userSessions = this.sessions.findByPrincipalName(principalName).values();
+        return userSessions;
+    }
+
+    void removeSession(String principalName, String sessionIdToDelete) {
+        Set<String> userSessionIds = this.sessions.findByPrincipalName(principalName).keySet();
+        if (userSessionIds.contains(sessionIdToDelete)) {
+            this.sessions.deleteById(sessionIdToDelete);
+        }
     }
 
     void refreshAuthentication(String newUsername) {
