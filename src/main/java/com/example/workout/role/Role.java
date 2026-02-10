@@ -1,5 +1,6 @@
 package com.example.workout.role;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import com.example.workout.workoutuser.WorkoutUser;
@@ -17,7 +18,7 @@ import lombok.Getter;
 @Getter
 @Entity
 @Table(name = "roles")
-public class Role {
+public class Role implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
