@@ -64,6 +64,10 @@
 
       <div class="row mb-3">
         <div class="col-12">
+          <form class="d-flex justify-content-end mb-3" th:action="@{/admin/users}" method="GET">
+            <input type="text" name="email" class="form-control me-2" placeholder="Filter by email..." th:value="${param.email}">
+            <button type="submit" class="btn btn-outline-primary">Filter</button>
+          </form>
           <div
             th:if="${#lists.isEmpty(workoutUsers)}"
             class="alert alert-info text-center"

@@ -57,9 +57,10 @@ public class AdminController {
     @GetMapping({"users", "users/"})
     public String listAllUsers(
         @RequestParam(defaultValue = "1") int pageNo,
+        @RequestParam String email,
         Model model
     ) {
-        Page<WorkoutUser> page = workoutUserService.findPaginatedAndSorted(pageNo);
+        Page<WorkoutUser> page = workoutUserService.findPaginatedAndSorted(pageNo, email);
         List<WorkoutUserDto> workoutUsers = page.getContent().stream().map(w -> workoutUserService.convertToDto(w)).toList();
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());

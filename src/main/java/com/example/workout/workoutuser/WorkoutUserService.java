@@ -49,11 +49,15 @@ public class WorkoutUserService {
         return findByUsername(username).map(this :: convertToDto);
     }
 
-    public Page<WorkoutUser> findPaginatedAndSorted(int pageNo) {
+    public Page<WorkoutUser> findPaginatedAndSorted(int pageNo, String email) {
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
         Pageable pageable = PageRequest.of(pageNo - 1, 9, sort);
         RoleType roleType = RoleType.USER;
-        return repository.findByRoles_Name(roleType, pageable);
+        if (email.isBlank()) {
+            return repository.findByRoles_Name(roleType, pageable);
+        } else {
+            return repository.findByEmailContainingAndRoles_Name(email, roleType, pageable);
+        }
     }
 
     public List<WorkoutUser> findAllOnline() {
