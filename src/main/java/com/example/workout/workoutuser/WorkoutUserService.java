@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -52,8 +53,11 @@ public class WorkoutUserService {
         return findByUsername(username).map(this :: convertToDto);
     }
 
-    public Page<WorkoutUser> findPaginatedAndSorted(int pageNo, Optional<String> email) {
-        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+    public Page<WorkoutUser> findPaginatedAndSorted(int pageNo, Optional<String> email, Optional<String> sortBy) {
+        String sortByOrElse = sortBy.orElse("id_asc");
+        String[] sortAndOrder = sortByOrElse.split("_");
+        Direction direction = sortAndOrder[1].equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortAndOrder[0]);
         Pageable pageable = PageRequest.of(pageNo - 1, 10, sort);
         RoleType roleType = RoleType.USER;
         if (email.isEmpty()) {

@@ -64,9 +64,23 @@
 
       <div class="row mb-3">
         <div class="col-12">
-          <form class="d-flex justify-content-end mb-3" th:action="@{/admin/users}" method="GET">
-            <input type="text" name="email" class="form-control me-2" placeholder="Filter by email..." th:value="${param.email}">
-            <button type="submit" class="btn btn-outline-primary">Filter</button>
+          <form class="row g-2 align-items-center mb-3" th:action="@{/admin/users}" method="GET">
+            <div class="col-md-7">
+              <input type="text" name="email" class="form-control" placeholder="Filter by email..." th:value="${param.email}">
+            </div>
+            <div class="col-md-4">
+              <select name="sortBy" class="form-select" th:value="${param.sortBy}">
+                <option value="id_asc">ID</option>
+                <option value="id_desc">ID reverse</option>
+                <option value="email_asc">Email</option>
+                <option value="email_desc">Email reverse</option>
+                <option value="username_asc">Username</option>
+                <option value="username_desc">Username reverse</option>
+              </select>
+            </div>
+            <div class="col-md-1">
+              <button type="submit" class="btn btn-outline-primary w-100">Go</button>
+            </div>
           </form>
           <div
             th:if="${#lists.isEmpty(workoutUsers)}"
