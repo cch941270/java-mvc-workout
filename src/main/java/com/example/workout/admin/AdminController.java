@@ -1,6 +1,7 @@
 package com.example.workout.admin;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -57,7 +58,7 @@ public class AdminController {
     @GetMapping({"users", "users/"})
     public String listAllUsers(
         @RequestParam(defaultValue = "1") int pageNo,
-        @RequestParam String email,
+        @RequestParam Optional<String> email,
         Model model
     ) {
         Page<WorkoutUser> page = workoutUserService.findPaginatedAndSorted(pageNo, email);
