@@ -54,7 +54,7 @@ public class WorkoutUserService {
 
     public Page<WorkoutUser> findPaginatedAndSorted(int pageNo, Optional<String> email) {
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
-        Pageable pageable = PageRequest.of(pageNo - 1, 9, sort);
+        Pageable pageable = PageRequest.of(pageNo - 1, 10, sort);
         RoleType roleType = RoleType.USER;
         if (email.isEmpty()) {
             return repository.findByRoles_Name(roleType, pageable);
