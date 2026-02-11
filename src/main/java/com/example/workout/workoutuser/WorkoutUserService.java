@@ -23,6 +23,8 @@ import org.springframework.session.Session;
 import org.springframework.stereotype.Service;
 
 import com.example.workout.legexercise.LegExerciseService;
+import com.example.workout.role.Role;
+import com.example.workout.role.RoleRepository;
 import com.example.workout.role.RoleType;
 
 import lombok.RequiredArgsConstructor;
@@ -31,9 +33,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WorkoutUserService {
     private final WorkoutUserRepository repository;
+    private final RoleRepository roleRepository;
     private final LegExerciseService legExerciseService;
-    private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;
+    private final PasswordEncoder passwordEncoder;
     private final SessionRegistry sessionRegistry;
     private final FindByIndexNameSessionRepository<? extends Session> sessions;
 
@@ -72,11 +75,13 @@ public class WorkoutUserService {
     }
 
     void create(WorkoutUserPlain workoutUserPlain) {
+        Role userRole = roleRepository.findByName(RoleType.USER).get();
         WorkoutUser workoutUser = new WorkoutUser(
             workoutUserPlain.email(),
             workoutUserPlain.username(),
             passwordEncoder.encode(workoutUserPlain.plainPassword())
         );
+        workoutUser.setRoles(Set.of(userRole));
         repository.save(workoutUser);
     }
 

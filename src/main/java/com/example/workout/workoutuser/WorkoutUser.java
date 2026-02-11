@@ -50,7 +50,7 @@ public class WorkoutUser implements UserDetails{
     @OneToMany(mappedBy = "workoutUser", cascade = CascadeType.ALL)
     private List<LegExercise> legExercises;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
         name = "workout_user_roles",
         joinColumns = @JoinColumn(name = "workout_user_id"),
