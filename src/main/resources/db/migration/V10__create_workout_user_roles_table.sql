@@ -1,5 +1,5 @@
 CREATE TABLE workout_user_roles (
-    id BIGINT NOT NULL,
+    id BIGINT GENERATED ALWAYS AS IDENTITY,
     workout_user_id BIGINT NOT NULL,
     role_id BIGINT NOT NULL,
     assigned_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -9,5 +9,3 @@ CREATE TABLE workout_user_roles (
     FOREIGN KEY (workout_user_id) REFERENCES workout_users (id) ON DELETE CASCADE,
     FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE CASCADE
 );
-
-CREATE SEQUENCE user_roles_id_seq START 1 INCREMENT 1;

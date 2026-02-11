@@ -27,6 +27,6 @@ WITH
     user_role AS (
         SELECT id FROM roles WHERE name = 'USER' LIMIT 1
     )
-INSERT INTO workout_user_roles (id, workout_user_id, role_id)
-SELECT nextval('user_roles_id_seq'), new_users.id, user_role.id
+INSERT INTO workout_user_roles (workout_user_id, role_id)
+SELECT new_users.id, user_role.id
 FROM new_users, user_role;
