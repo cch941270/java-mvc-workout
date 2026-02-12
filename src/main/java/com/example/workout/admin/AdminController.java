@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.workout.legexercise.LegExercise;
 import com.example.workout.legexercise.LegExerciseDto;
 import com.example.workout.legexercise.LegExerciseService;
+import com.example.workout.legexercise.LegExerciseType;
 import com.example.workout.workoutuser.WorkoutUser;
 import com.example.workout.workoutuser.WorkoutUserDto;
 import com.example.workout.workoutuser.WorkoutUserService;
@@ -31,7 +32,20 @@ public class AdminController {
 
     private final LegExerciseService legExerciseService;
     private final WorkoutUserService workoutUserService;
+    private final AdminService adminService;
 
+    @GetMapping({"statistics", "statistics/"})
+    public String statistics(Model model) {
+        model.addAttribute("numberOfUsers", adminService.numberOfUsers());
+        model.addAttribute("numberOfLegExercises", adminService.numberOfLegExercises());
+        model.addAttribute("numberOfLunge", adminService.numberOfLegExercisesByType(LegExerciseType.LUNGE));
+        model.addAttribute("numberOfSquat", adminService.numberOfLegExercisesByType(LegExerciseType.SQUAT));
+        model.addAttribute("numberOfStepUp", adminService.numberOfLegExercisesByType(LegExerciseType.STEP_UP));
+        model.addAttribute("numberOfLungeCount", adminService.numberOfLegExerciseCountsByType(LegExerciseType.LUNGE));
+        model.addAttribute("numberOfSquatCount", adminService.numberOfLegExerciseCountsByType(LegExerciseType.SQUAT));
+        model.addAttribute("numberOfStepUpCount", adminService.numberOfLegExerciseCountsByType(LegExerciseType.STEP_UP));
+        return "admin/statistics/index";
+    }
 
     @GetMapping({"leg-exercises", "leg-exercises/"})
     public String listAll(
