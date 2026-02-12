@@ -14,4 +14,5 @@ public interface WorkoutUserRepository extends JpaRepository<WorkoutUser, Long> 
     Optional<WorkoutUser> findByUsername(String username);
     Page<WorkoutUser> findByRoles_Name(RoleType roleType, Pageable pageable);
     Page<WorkoutUser> findByEmailContainingAndRoles_Name(String email, RoleType roleType, Pageable pageable);
+    Integer countByRoles_Name(RoleType roleType);
 }
