@@ -27,7 +27,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                 .anyMatch("ROLE_USER"::equals);
 
         if (isAdmin) {
-            response.sendRedirect("/admin/leg-exercises");
+            response.sendRedirect("/admin/statistics");
         } else if (isUser) {
             response.sendRedirect("/leg-exercises");
         } else {
