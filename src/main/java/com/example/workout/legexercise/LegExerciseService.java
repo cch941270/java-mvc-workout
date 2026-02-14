@@ -21,10 +21,6 @@ public class LegExerciseService {
     private final LegExerciseRepository repository;
     private final WorkoutUserRepository workoutUserRepository;
 
-    List<LegExerciseDto> findAll() {
-        return repository.findAll().stream().map(this :: convertToDto).toList();
-    }
-
     public List<LegExercise> findAllSortedByStartedOn() {
         Sort sortByStartedOnDesc = Sort.by(Sort.Direction.DESC, "startedOn");
         return repository.findAll(sortByStartedOnDesc);
@@ -40,10 +36,6 @@ public class LegExerciseService {
         Sort sort = Sort.by(Sort.Direction.DESC, "startedOn");
         Pageable pageable = PageRequest.of(pageNo - 1, 9, sort);
         return repository.findAll(pageable);
-    }
-
-    Optional<LegExerciseDto> findById(Integer id) {
-        return repository.findById(id).map(this :: convertToDto);
     }
 
     Optional<LegExercise> findByUsernameAndId(String username, Integer id) {

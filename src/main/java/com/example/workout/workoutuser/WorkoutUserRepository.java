@@ -11,6 +11,7 @@ import com.example.workout.role.RoleType;
 
 @Repository
 public interface WorkoutUserRepository extends JpaRepository<WorkoutUser, Long> {
+    Optional<WorkoutUser> findByEmail(String email);
     Optional<WorkoutUser> findByUsername(String username);
     Page<WorkoutUser> findByRoles_Name(RoleType roleType, Pageable pageable);
     Page<WorkoutUser> findByEmailContainingAndRoles_Name(String email, RoleType roleType, Pageable pageable);
