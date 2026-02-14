@@ -16,9 +16,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Positive;
+import lombok.Getter;
 
 import com.example.workout.workoutuser.WorkoutUser;
 
+@Getter
 @Entity
 @Table(name = "leg_exercises")
 public class LegExercise {
@@ -59,36 +61,16 @@ public class LegExercise {
         this.workoutUser = workoutUser;
     }
 
-    public Integer getId() {
-        return this.id;
-    }
-
-    public LegExerciseType getLegExerciseType() {
-        return legExerciseType;
-    }
-
     public void setLegExerciseType(LegExerciseType legExerciseType) {
         this.legExerciseType = legExerciseType;
-    }
-
-    public LocalDateTime getStartedOn() {
-        return startedOn;
     }
 
     public void setStartedOn(LocalDateTime startedOn) {
         this.startedOn = startedOn;
     }
 
-    public Integer getCount() {
-        return count;
-    }
-
     public void setCount(Integer count) {
         this.count = count;
-    }
-
-    public WorkoutUser getWorkoutUser() {
-        return this.workoutUser;
     }
 
     public void setWorkoutUser(WorkoutUser workoutUser) {
