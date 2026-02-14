@@ -96,7 +96,7 @@
                             <label for="legExerciseType" class="form-label">Exercise Type</label>
                             <select th:field="*{legExerciseType}" class="form-select" id="legExerciseType" required>
                                 <option value="">Select exercise type</option>
-                                <option th:each="type : ${T(com.example.workout.legexercise.LegExerciseType).values()}" 
+                                <option th:each="type : ${allLegExerciseTypes}"
                                         th:value="${type}" 
                                         th:text="${type}"
                                         th:selected="${legExercise.legExerciseType == type.toString()}">Exercise Type</option>

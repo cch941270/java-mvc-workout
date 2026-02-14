@@ -65,6 +65,7 @@ public class LegExerciseController {
             return "redirect:/leg-exercises";
         }
         model.addAttribute("legExercise", legExercise.get());
+        model.addAttribute("allLegExerciseTypes", LegExerciseType.values());
         return "legexercises/edit";
     }
 
