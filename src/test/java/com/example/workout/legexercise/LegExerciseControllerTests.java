@@ -44,7 +44,7 @@ public class LegExerciseControllerTests {
     WorkoutUserDetailsService userDetailsService;
 
     private final Role userRole = new Role((long)1, RoleType.USER);
-    private final WorkoutUser workoutUser = new WorkoutUser((long)1, "test@example.com", "password", Set.of(userRole));
+    private final WorkoutUser workoutUser = new WorkoutUser((long)1, "test@example.com", "test", "password", Set.of(userRole));
     private final List<LegExercise> legExercises = new ArrayList<>();
     private final LegExerciseType[] legExerciseTypes = LegExerciseType.values();
 

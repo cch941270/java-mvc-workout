@@ -54,6 +54,7 @@ public class LegExerciseApiControllerTests {
     private final WorkoutUser workoutUser = new WorkoutUser(
         (long)1,
         "4mV3F@example.com",
+        "4mV3F",
         "password",
         Set.of(userRole)
     );
