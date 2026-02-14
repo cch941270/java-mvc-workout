@@ -12,6 +12,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,8 +26,10 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.example.workout.role.Role;
+import com.example.workout.role.RoleType;
 import com.example.workout.workoutuser.WorkoutUser;
+import com.example.workout.workoutuser.WorkoutUserRepository;
 
 @WebMvcTest(LegExerciseApiController.class)
 @ActiveProfiles("test")
@@ -42,9 +45,18 @@ public class LegExerciseApiControllerTests {
     LegExerciseRepository repository;
 
     @MockitoBean
-    LegExerciseService service;
+    WorkoutUserRepository workoutUserRepository;
 
-    private final WorkoutUser workoutUser = new WorkoutUser((long)1, "4mV3F@example.com", "password");
+    @MockitoBean
+    LegExerciseApiService service;
+
+    private final Role userRole = new Role((long)1, RoleType.USER);
+    private final WorkoutUser workoutUser = new WorkoutUser(
+        (long)1,
+        "4mV3F@example.com",
+        "password",
+        Set.of(userRole)
+    );
     private final List<LegExerciseDto> legExerciseDtos = new ArrayList<>();
     
     @BeforeEach
@@ -90,34 +102,36 @@ public class LegExerciseApiControllerTests {
     @Test
     @WithMockUser
     void shouldCreate() throws Exception {
-        var legExercise = new LegExercise(
+        when(workoutUserRepository.findByEmail(ArgumentMatchers.anyString())).thenReturn(Optional.of(workoutUser));
+        var legExerciseDto = new LegExerciseDto(
             null,
             LegExerciseType.LUNGE,
             LocalDateTime.now(),
             5,
-            workoutUser
+            workoutUser.getEmail()
         );
         mvc.perform(post("/api/leg-exercises")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(legExercise))
+                        .content(objectMapper.writeValueAsString(legExerciseDto))
                     ).andExpect(status().isCreated());
     }
 
     @Test
     @WithMockUser
     void shouldUpdate() throws Exception {
-        var legExercise = new LegExercise(
+        when(workoutUserRepository.findByEmail(ArgumentMatchers.anyString())).thenReturn(Optional.of(workoutUser));
+        var legExerciseDto = new LegExerciseDto(
             1,
             LegExerciseType.STEP_UP,
             LocalDateTime.now(),
             40,
-            workoutUser
+            workoutUser.getEmail()
         );
         mvc.perform(put("/api/leg-exercises/1")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(legExercise))
+                        .content(objectMapper.writeValueAsString(legExerciseDto))
                     ).andExpect(status().isNoContent());
     }
 

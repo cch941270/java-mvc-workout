@@ -65,10 +65,11 @@ public class WorkoutUser implements UserDetails{
         this.password = password;
     }
 
-    public WorkoutUser(Long id, String email, String password) {
+    public WorkoutUser(Long id, String email, String password, Set<Role> roles) {
         this.id = id;
         this.email = email;
         this.password = password;
+        this.roles = roles;
     }
 
     @Override

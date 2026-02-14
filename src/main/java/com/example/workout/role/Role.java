@@ -33,4 +33,9 @@ public class Role implements Serializable{
         super();
     }
 
+    public Role(Long id, RoleType name) {
+        this.id = id;
+        this.name = name;
+    }
+
 }
