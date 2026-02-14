@@ -55,10 +55,11 @@ public class LegExerciseApiControllerIntTests {
                 .exchange()
                 .expectStatus().isOk()
                 .expectBodyList(LegExerciseDto.class)
-                .hasSize(13);
+                .hasSize(433);
     }
 
     @Test
+    @Order(2)
     void shouldFindById() {
         client.get()
                 .uri("/api/leg-exercises/1")
@@ -71,35 +72,53 @@ public class LegExerciseApiControllerIntTests {
                 .jsonPath("$.count").isEqualTo(10);
     }
 
-    // @Test
-    // void shouldCreate() {
-    //     LegExercise legExercise = new LegExercise(LegExerciseType.STEP_UP, LocalDateTime.now(), 40);
+    @Test
+    @Order(3)
+    void shouldCreate() {
+        LegExerciseDto legExerciseDto = new LegExerciseDto(
+            null,
+            LegExerciseType.STEP_UP,
+            LocalDateTime.now(),
+            40,
+            "user1@example.com"
+        );
 
-    //     ResponseEntity<Void> responseEntity = client.post()
-    //                                             .uri("/api/leg-exercises")
-    //                                             .body(legExercise)
-    //                                             .retrieve()
-    //                                             .toBodilessEntity();
-    //     assertEquals(201, responseEntity.getStatusCode().value());
-    // }
-
-    // @Test
-    // void shouldUpdate() {
-    //     LegExercise legExercise = client.get()
-    //                                         .uri("/api/leg-exercises/1")
-    //                                         .retrieve()
-    //                                         .body(LegExercise.class);
-    //     legExercise.setCount(60);
-
-    //     ResponseEntity<Void> responseEntity = client.put()
-    //                                             .uri("/api/leg-exercises/1")
-    //                                             .body(legExercise)
-    //                                             .retrieve()
-    //                                             .toBodilessEntity();
-    //     assertEquals(204, responseEntity.getStatusCode().value());
-    // }
+        client.post()
+                .uri("/api/leg-exercises")
+                .bodyValue(legExerciseDto)
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody().isEmpty();
+    }
 
     @Test
+    @Order(4)
+    void shouldUpdate() {
+        LegExerciseDto legExerciseDto = client.get()
+                                            .uri("/api/leg-exercises/1")
+                                            .exchange()
+                                            .expectBody(LegExerciseDto.class)
+                                            .returnResult()
+                                            .getResponseBody();
+
+        LegExerciseDto updatedLegExerciseDto = new LegExerciseDto(
+            legExerciseDto.id(),
+            legExerciseDto.legExerciseType(),
+            legExerciseDto.startedOn(),
+            60,
+            legExerciseDto.workoutUserEmail()
+        );
+
+        client.put()
+                .uri("/api/leg-exercises/1")
+                .bodyValue(updatedLegExerciseDto)
+                .exchange()
+                .expectStatus().isNoContent()
+                .expectBody().isEmpty();
+    }
+
+    @Test
+    @Order(5)
     void shouldDelete() {
         client.delete()
                 .uri("/api/leg-exercises/2")
