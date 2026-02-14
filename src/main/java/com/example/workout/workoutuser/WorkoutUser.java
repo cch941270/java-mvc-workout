@@ -3,7 +3,6 @@ package com.example.workout.workoutuser;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.Collection;
 import java.util.List;
@@ -32,7 +31,6 @@ import com.example.workout.legexercise.LegExercise;
 import com.example.workout.role.Role;
 
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -70,6 +68,26 @@ public class WorkoutUser implements UserDetails{
         this.email = email;
         this.username = username;
         this.password = password;
+        this.roles = roles;
+    }
+
+    void setEmail(String email) {
+        this.email = email;
+    }
+
+    void setUsername(String username) {
+        this.username = username;
+    }
+
+    void setPassword(String password) {
+        this.password = password;
+    }
+
+    void setLegExercises(List<LegExercise> legExercises) {
+        this.legExercises = legExercises;
+    }
+
+    void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
