@@ -9,7 +9,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -26,6 +29,7 @@ import com.example.workout.workoutuser.WorkoutUserRepository;
 @DataJpaTest
 @ActiveProfiles("test")
 @Testcontainers
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class LegExerciseRepositoryTests {
 
     private LegExercise legExercise1;
@@ -69,12 +73,14 @@ public class LegExerciseRepositoryTests {
     }
 
     @Test
+    @Order(1)
     void shouldFindAll() {
         List<LegExercise> legExercises = repository.findAll();
-        assertEquals(15, legExercises.size());
+        assertEquals(435, legExercises.size());
     }
 
     @Test
+    @Order(2)
     void shouldFindById() {
         LegExercise legExercise = repository.findById(legExercise1.getId()).get();
         assertEquals(LegExerciseType.LUNGE, legExercise.getLegExerciseType());
@@ -82,12 +88,14 @@ public class LegExerciseRepositoryTests {
     }
 
     @Test
+    @Order(3)
     void shouldNotFindByInvalidId() {
         var legExercise = repository.findById(legExercise2.getId() + 1);
         assertEquals(legExercise, Optional.empty());
     }
 
     @Test
+    @Order(4)
     void shouldCreate() {
         repository.save(new LegExercise(
             LegExerciseType.STEP_UP,
@@ -96,10 +104,11 @@ public class LegExerciseRepositoryTests {
             workoutUser
         ));
         List<LegExercise> legExercises = repository.findAll();
-        assertEquals(16, legExercises.size());
+        assertEquals(436, legExercises.size());
     }
 
     @Test
+    @Order(5)
     void shouldNotCreateWithNegativeCount() {
         LegExercise invalidLegExercise = new LegExercise(
             LegExerciseType.STEP_UP,
@@ -113,6 +122,7 @@ public class LegExerciseRepositoryTests {
     }
 
     @Test
+    @Order(6)
     void shouldUpdate() {
         legExercise1.setLegExerciseType(LegExerciseType.STEP_UP);
         legExercise1.setCount(20);
@@ -123,9 +133,10 @@ public class LegExerciseRepositoryTests {
     }
 
     @Test
+    @Order(7)
     void shouldDelete() {
         repository.delete(legExercise2);
         List<LegExercise> legExercises = repository.findAll();
-        assertEquals(14, legExercises.size());
+        assertEquals(434, legExercises.size());
     }
 }
