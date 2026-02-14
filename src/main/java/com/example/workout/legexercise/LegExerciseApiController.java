@@ -16,26 +16,22 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/leg-exercises")
 public class LegExerciseApiController {
-    private final LegExerciseRepository legExerciseRepository;
-    private final LegExerciseService legExerciseService;
-
-    public LegExerciseApiController(LegExerciseRepository legExerciseRepository, LegExerciseService legExerciseService) {
-        this.legExerciseRepository = legExerciseRepository;
-        this.legExerciseService = legExerciseService;
-    }
+    private final LegExerciseApiService service;
 
     @GetMapping("")
     List<LegExerciseDto> findAll() {
-        return legExerciseService.findAll();
+        return service.findAll();
     }
 
     @GetMapping("/{id}")
     LegExerciseDto findById(@PathVariable Integer id) {
-        Optional<LegExerciseDto> legExerciseDto = legExerciseService.findById(id);
+        Optional<LegExerciseDto> legExerciseDto = service.findById(id);
         if (legExerciseDto.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Leg exercise not found.");
         }
@@ -44,19 +40,19 @@ public class LegExerciseApiController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
-    void create(@Valid @RequestBody LegExercise legExercise) {
-        legExerciseRepository.save(legExercise);
+    void create(@Valid @RequestBody LegExerciseDto legExerciseDto) {
+        service.saveLegExercise(legExerciseDto, null);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{id}")
-    void update(@Valid @RequestBody LegExercise legExercise, @PathVariable Integer id) {
-        legExerciseRepository.save(legExercise);
+    void update(@Valid @RequestBody LegExerciseDto legExerciseDto, @PathVariable Integer id) {
+        service.saveLegExercise(legExerciseDto, id);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     void delete(@PathVariable Integer id) {
-        legExerciseRepository.deleteById(id);
+        service.deleteById(id);
     }
 }
