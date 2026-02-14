@@ -2,6 +2,7 @@ package com.example.workout.legexercise;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -13,6 +14,9 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -81,6 +85,51 @@ public class LegExerciseRepositoryTests {
 
     @Test
     @Order(2)
+    void shouldFindByIdAndWorkoutUserId() {
+        Optional<LegExercise> legExercise = repository.findByIdAndWorkoutUserId(legExercise1.getId(), workoutUser.getId());
+        assertTrue(legExercise.isPresent());
+        assertEquals(LegExerciseType.LUNGE, legExercise.get().getLegExerciseType());
+    }
+
+    @Test
+    @Order(3)
+    void shouldNotFindByIdAndWorkoutUserIdWithInvalidUserId() {
+        Optional<LegExercise> legExercise = repository.findByIdAndWorkoutUserId(legExercise1.getId(), workoutUser.getId() + 1);
+        assertTrue(legExercise.isEmpty());
+    }
+
+    @Test
+    @Order(4)
+    void shouldFindAllWithPagination() {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<LegExercise> page = repository.findAll(pageable);
+        assertEquals(10, page.getContent().size());
+        assertEquals(435, page.getTotalElements());
+    }
+
+    @Test
+    @Order(5)
+    void shouldCountAllLegExercises() {
+        Integer count = repository.countIdBy();
+        assertEquals(435, count);
+    }
+
+    @Test
+    @Order(6)
+    void shouldCountLegExercisesByType() {
+        Integer count = repository.countIdByLegExerciseType(LegExerciseType.LUNGE);
+        assertTrue(count > 0);
+    }
+
+    @Test
+    @Order(7)
+    void shouldSumCountByLegExerciseType() {
+        Integer sum = repository.sumCountByLegExerciseType(LegExerciseType.LUNGE);
+        assertTrue(sum > 0);
+    }
+
+    @Test
+    @Order(8)
     void shouldFindById() {
         LegExercise legExercise = repository.findById(legExercise1.getId()).get();
         assertEquals(LegExerciseType.LUNGE, legExercise.getLegExerciseType());
@@ -88,14 +137,14 @@ public class LegExerciseRepositoryTests {
     }
 
     @Test
-    @Order(3)
+    @Order(9)
     void shouldNotFindByInvalidId() {
         var legExercise = repository.findById(legExercise2.getId() + 1);
         assertEquals(legExercise, Optional.empty());
     }
 
     @Test
-    @Order(4)
+    @Order(10)
     void shouldCreate() {
         repository.save(new LegExercise(
             LegExerciseType.STEP_UP,
@@ -108,7 +157,7 @@ public class LegExerciseRepositoryTests {
     }
 
     @Test
-    @Order(5)
+    @Order(11)
     void shouldNotCreateWithNegativeCount() {
         LegExercise invalidLegExercise = new LegExercise(
             LegExerciseType.STEP_UP,
@@ -122,7 +171,7 @@ public class LegExerciseRepositoryTests {
     }
 
     @Test
-    @Order(6)
+    @Order(12)
     void shouldUpdate() {
         legExercise1.setLegExerciseType(LegExerciseType.STEP_UP);
         legExercise1.setCount(20);
@@ -133,7 +182,7 @@ public class LegExerciseRepositoryTests {
     }
 
     @Test
-    @Order(7)
+    @Order(13)
     void shouldDelete() {
         repository.delete(legExercise2);
         List<LegExercise> legExercises = repository.findAll();
