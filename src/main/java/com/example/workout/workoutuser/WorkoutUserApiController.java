@@ -15,17 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/workout-users")
 public class WorkoutUserApiController {
     private final WorkoutUserRepository repository;
     private final WorkoutUserService service;
-
-    public WorkoutUserApiController(WorkoutUserRepository repository, WorkoutUserService service) {
-        this.repository = repository;
-        this.service = service;
-    }
 
     @GetMapping("/{id}")
     public WorkoutUserDto findById(@PathVariable Long id) {

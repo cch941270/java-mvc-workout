@@ -5,14 +5,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class WorkoutUserDetailsService implements UserDetailsService {
 
     private final WorkoutUserRepository workoutUserRepository;
-
-    public WorkoutUserDetailsService(WorkoutUserRepository workoutUserRepository) {
-        this.workoutUserRepository = workoutUserRepository;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
