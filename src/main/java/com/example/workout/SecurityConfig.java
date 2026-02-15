@@ -24,22 +24,22 @@ public class SecurityConfig {
     private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
     @Bean
-    public HttpSessionEventPublisher httpSessionEventPublisher() {
+    HttpSessionEventPublisher httpSessionEventPublisher() {
         return new HttpSessionEventPublisher();
     }
 
     @Bean
-    public SessionRegistry sessionRegistry() {
+    SessionRegistry sessionRegistry() {
         return new SessionRegistryImpl();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(requests -> requests
                 .requestMatchers("/api/**").permitAll()
