@@ -16,6 +16,7 @@ import com.example.workout.role.Role;
 import com.example.workout.role.RoleRepository;
 import com.example.workout.role.RoleType;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -54,7 +55,7 @@ public class WorkoutUserService {
         repository.save(workoutUser);
     }
 
-    void update(String username, WorkoutUserPlain workoutUserPlain) {
+    void update(String username, WorkoutUserPlain workoutUserPlain, HttpSession session) {
         if (!workoutUserPlain.plainPassword().equals(workoutUserPlain.confirmPassword())) {
             throw new PasswordsNotTheSame();
         }
@@ -69,7 +70,7 @@ public class WorkoutUserService {
         }
         repository.save(workoutUser);
         if (username != updatedUsername) {
-            refreshAuthentication(updatedUsername);
+            refreshAuthentication(updatedUsername, session);
         }
     }
 
@@ -79,16 +80,15 @@ public class WorkoutUserService {
         SecurityContextHolder.getContext().setAuthentication(null);
     }
 
-    void refreshAuthentication(String newUsername) {
+    void refreshAuthentication(String newUsername, HttpSession session) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(newUsername);
-
         Authentication newAuthentication = new UsernamePasswordAuthenticationToken(
             userDetails,
-            userDetails.getPassword(),
+            null,
             userDetails.getAuthorities()
         );
-
         SecurityContextHolder.getContext().setAuthentication(newAuthentication);
+        session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
     }
 
     public WorkoutUserDto convertToDto(WorkoutUser workoutUser) {

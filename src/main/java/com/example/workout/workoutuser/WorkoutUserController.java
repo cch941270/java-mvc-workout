@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -62,9 +63,14 @@ public class WorkoutUserController {
 
     @PreAuthorize("hasRole('USER')")
     @PutMapping({"", "/"})
-    public String update(@AuthenticationPrincipal UserDetails userDetails, @ModelAttribute WorkoutUserPlain workoutUserPlain, RedirectAttributes redirectAttributes) {
+    public String update(
+        @AuthenticationPrincipal UserDetails userDetails,
+        @ModelAttribute WorkoutUserPlain workoutUserPlain,
+        RedirectAttributes redirectAttributes,
+        HttpSession session
+    ) {
         try {
-            service.update(userDetails.getUsername(), workoutUserPlain);
+            service.update(userDetails.getUsername(), workoutUserPlain, session);
         } catch (PasswordsNotTheSame e) {
             redirectAttributes.addFlashAttribute("error", "Passwords are not the same.");
             return "redirect:/users/edit";
