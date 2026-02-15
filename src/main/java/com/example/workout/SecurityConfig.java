@@ -43,7 +43,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(requests -> requests
                 .requestMatchers("/api/**").permitAll()
-                .requestMatchers("/", "/users/new").permitAll()
+                .requestMatchers("/", "/users/new", "/error").permitAll()
                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
                 .requestMatchers("/favicon.ico").permitAll()
                 .requestMatchers("/css/*").permitAll()
