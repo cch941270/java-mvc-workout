@@ -11,10 +11,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class WorkoutUserDetailsService implements UserDetailsService {
 
-    private final WorkoutUserRepository workoutUserRepository;
+    private final WorkoutUserRepository repository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return workoutUserRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found."));
+        return repository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found."));
     }
 }
