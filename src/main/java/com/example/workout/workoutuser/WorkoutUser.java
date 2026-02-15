@@ -56,13 +56,6 @@ public class WorkoutUser implements UserDetails{
     )
     private Set<Role> roles;
 
-
-    public WorkoutUser(String email, String username, String password) {
-        this.email = email;
-        this.username = username;
-        this.password = password;
-    }
-
     public WorkoutUser(Long id, String email, String username, String password, Set<Role> roles) {
         this.id = id;
         this.email = email;

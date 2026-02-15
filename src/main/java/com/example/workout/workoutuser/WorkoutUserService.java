@@ -81,11 +81,12 @@ public class WorkoutUserService {
     void create(WorkoutUserPlain workoutUserPlain) {
         Role userRole = roleRepository.findByName(RoleType.USER).get();
         WorkoutUser workoutUser = new WorkoutUser(
+            null,
             workoutUserPlain.email(),
             workoutUserPlain.username(),
-            passwordEncoder.encode(workoutUserPlain.plainPassword())
+            passwordEncoder.encode(workoutUserPlain.plainPassword()),
+            Set.of(userRole)
         );
-        workoutUser.setRoles(Set.of(userRole));
         repository.save(workoutUser);
     }
 

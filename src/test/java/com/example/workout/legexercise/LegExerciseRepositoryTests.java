@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
@@ -27,6 +28,9 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import jakarta.validation.ConstraintViolationException;
 
+import com.example.workout.role.Role;
+import com.example.workout.role.RoleRepository;
+import com.example.workout.role.RoleType;
 import com.example.workout.workoutuser.WorkoutUser;
 import com.example.workout.workoutuser.WorkoutUserRepository;
 
@@ -45,6 +49,9 @@ public class LegExerciseRepositoryTests {
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16");
     
     @Autowired
+    RoleRepository roleRepository;
+
+    @Autowired
     WorkoutUserRepository workoutUserRepository;
 
     @Autowired
@@ -52,10 +59,14 @@ public class LegExerciseRepositoryTests {
 
     @BeforeEach
     public void setUp() {
+        final Role userRole = roleRepository.findByName(RoleType.USER).get();
         workoutUser = new WorkoutUser(
+            null,
             "JxGw8@example.com",
             "JxGw8",
-            "password"
+            "password",
+            Set.of(userRole)
+
         );
         workoutUserRepository.save(workoutUser);
 

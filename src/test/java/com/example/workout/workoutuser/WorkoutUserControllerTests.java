@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+
+import com.example.workout.role.Role;
+import com.example.workout.role.RoleType;
 
 @WebMvcTest(WorkoutUserController.class)
 @ActiveProfiles("test")
@@ -31,7 +35,14 @@ public class WorkoutUserControllerTests {
     @MockitoBean
     WorkoutUserDetailsService userDetailsService;
 
-    private final WorkoutUser workoutUser = new WorkoutUser("test@example.com", "testuser", "password");
+    private final Role userRole = new Role(null, RoleType.USER);
+    private final WorkoutUser workoutUser = new WorkoutUser(
+        null,
+        "test@example.com",
+        "testuser",
+        "password",
+        Set.of(userRole)
+    );
     private final WorkoutUserDto workoutUserDto = new WorkoutUserDto(
         1L,
         "test@example.com",
