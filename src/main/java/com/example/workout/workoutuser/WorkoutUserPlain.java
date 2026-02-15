@@ -3,9 +3,14 @@ package com.example.workout.workoutuser;
 public record WorkoutUserPlain(
     String email,
     String username,
-    String plainPassword
+    String plainPassword,
+    String confirmPassword
 ) {
     public WorkoutUserPlain() {
-        this("", "", "");
+        this("", "", "", "");
+    }
+
+    public WorkoutUserPlain(String email, String username) {
+        this(email, username, "", "");
     }
 }

@@ -68,6 +68,8 @@
     <div class="container mt-4">
         <div class="row justify-content-center">
             <div class="col-md-8">
+                <div th:replace="~{fragments/message :: message}"></div>
+
                 <div class="form-section">
                     <div class="form-header">
                         <h2>Create New User</h2>
@@ -78,19 +80,25 @@
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
                             <input type="email" th:field="*{email}" class="form-control" id="email" required>
-                            <div class="form-text">Enter the user's email address</div>
+                            <div class="form-text">Enter your email address</div>
                         </div>
 
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
                             <input type="text" th:field="*{username}" class="form-control" id="username" required>
-                            <div class="form-text">Enter username</div>
+                            <div class="form-text">Enter your username</div>
                         </div>
 
                         <div class="mb-3">
                             <label for="plainPassword" class="form-label">Password</label>
                             <input type="password" th:field="*{plainPassword}" class="form-control" id="plainPassword" required>
-                            <div class="form-text">Enter a password for the user</div>
+                            <div class="form-text">Enter a password</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirm Password</label>
+                            <input type="password" th:field="*{confirmPassword}" class="form-control" id="confirmPassword" required>
+                            <div class="form-text">Enter the password again</div>
                         </div>
 
                         <div class="d-flex gap-2">

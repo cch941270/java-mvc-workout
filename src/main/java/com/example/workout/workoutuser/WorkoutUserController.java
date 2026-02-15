@@ -38,7 +38,12 @@ public class WorkoutUserController {
 
     @PostMapping({"", "/"})
     public String create(@ModelAttribute WorkoutUserPlain workoutUserPlain, RedirectAttributes redirectAttributes) {
-        service.create(workoutUserPlain);
+        try {
+            service.create(workoutUserPlain);
+        } catch (PasswordsNotTheSame e) {
+            redirectAttributes.addFlashAttribute("error", "Passwords are not the same.");
+            return "redirect:/users/new";
+        }
         redirectAttributes.addFlashAttribute("success", "Account created successfully!");
         return "redirect:/login";
     }
@@ -46,18 +51,24 @@ public class WorkoutUserController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping({"/edit", "/edit/"})
     public String editForm(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-        Optional<WorkoutUser> workoutUser = service.findByUsername(userDetails.getUsername());
-        if (workoutUser.isEmpty()) {
-            return "redirect:/leg-exercises";
-        }
-        model.addAttribute("workoutUser", workoutUser.get());
+        WorkoutUser workoutUser = service.findByUsername(userDetails.getUsername()).get();
+        WorkoutUserPlain workoutUserPlain = new WorkoutUserPlain(
+            workoutUser.getEmail(),
+            workoutUser.getUsername()
+        );
+        model.addAttribute("workoutUser", workoutUserPlain);
         return "workoutusers/edit";
     }
 
     @PreAuthorize("hasRole('USER')")
     @PutMapping({"", "/"})
-    public String update(@AuthenticationPrincipal UserDetails userDetails, @ModelAttribute WorkoutUser updatedWorkoutUser, RedirectAttributes redirectAttributes) {
-        service.update(userDetails.getUsername(), updatedWorkoutUser);
+    public String update(@AuthenticationPrincipal UserDetails userDetails, @ModelAttribute WorkoutUserPlain workoutUserPlain, RedirectAttributes redirectAttributes) {
+        try {
+            service.update(userDetails.getUsername(), workoutUserPlain);
+        } catch (PasswordsNotTheSame e) {
+            redirectAttributes.addFlashAttribute("error", "Passwords are not the same.");
+            return "redirect:/users/edit";
+        }
         redirectAttributes.addFlashAttribute("success", "Account updated successfully!");
         return "redirect:/users";
     }

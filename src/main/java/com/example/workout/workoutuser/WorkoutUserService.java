@@ -40,6 +40,9 @@ public class WorkoutUserService {
     }
 
     void create(WorkoutUserPlain workoutUserPlain) {
+        if (!workoutUserPlain.plainPassword().equals(workoutUserPlain.confirmPassword())) {
+            throw new PasswordsNotTheSame();
+        }
         Role userRole = roleRepository.findByName(RoleType.USER).get();
         WorkoutUser workoutUser = new WorkoutUser(
             null,
@@ -51,11 +54,14 @@ public class WorkoutUserService {
         repository.save(workoutUser);
     }
 
-    void update(String username, WorkoutUser updatedWorkoutUser) {
+    void update(String username, WorkoutUserPlain workoutUserPlain) {
+        if (!workoutUserPlain.plainPassword().equals(workoutUserPlain.confirmPassword())) {
+            throw new PasswordsNotTheSame();
+        }
         WorkoutUser workoutUser = repository.findByUsername(username).get();
-        String updatedUsername = updatedWorkoutUser.getUsername();
-        String updatedPassword = updatedWorkoutUser.getPassword();
-        workoutUser.setEmail(updatedWorkoutUser.getEmail());
+        String updatedUsername = workoutUserPlain.username();
+        String updatedPassword = workoutUserPlain.plainPassword();
+        workoutUser.setEmail(workoutUserPlain.email());
         workoutUser.setUsername(updatedUsername);
         if (!updatedPassword.isEmpty()) {
             String encodedPassword = passwordEncoder.encode(updatedPassword);

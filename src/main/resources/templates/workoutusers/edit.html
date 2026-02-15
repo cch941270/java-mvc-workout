@@ -83,6 +83,8 @@
     <div class="container mt-4">
         <div class="row justify-content-center">
             <div class="col-md-8">
+                <div th:replace="~{fragments/message :: message}"></div>
+
                 <div class="form-section">
                     <div class="form-header">
                         <h2>Edit User</h2>
@@ -104,13 +106,17 @@
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
                             <input type="text" th:field="*{username}" class="form-control" id="username" required>
-                            <div class="form-text">To be implemented</div>
                         </div>
 
                         <div class="mb-3">
-                            <label for="password" class="form-label">New Password</label>
-                            <input type="password" th:field="*{password}" class="form-control" id="password">
+                            <label for="plainPassword" class="form-label">New Password</label>
+                            <input type="password" th:field="*{plainPassword}" class="form-control" id="plainPassword">
                             <div class="form-text">Leave blank to keep current password</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                            <input type="password" th:field="*{confirmPassword}" class="form-control" id="confirmPassword">
                         </div>
 
                         <div class="d-flex gap-2">
