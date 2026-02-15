@@ -14,8 +14,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 @Entity
 @Table(name = "roles")
 public class Role implements Serializable{
@@ -28,10 +30,6 @@ public class Role implements Serializable{
 
     @ManyToMany(mappedBy = "roles")
     private Set<WorkoutUser> workoutUsers;
-
-    public Role() {
-        super();
-    }
 
     public Role(Long id, RoleType name) {
         this.id = id;

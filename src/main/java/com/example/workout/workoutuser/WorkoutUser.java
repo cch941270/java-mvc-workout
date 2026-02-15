@@ -102,7 +102,6 @@ public class WorkoutUser implements UserDetails{
         if (o == null || getClass() != o.getClass()) return false;
 
         WorkoutUser that = (WorkoutUser) o;
-
         return Objects.equals(username, that.username);
     }
 
