@@ -32,18 +32,18 @@ public class AdminController {
 
     private final LegExerciseService legExerciseService;
     private final WorkoutUserService workoutUserService;
-    private final AdminService adminService;
+    private final AdminService service;
 
     @GetMapping({"statistics", "statistics/"})
     public String statistics(Model model) {
-        model.addAttribute("numberOfUsers", adminService.numberOfUsers());
-        model.addAttribute("numberOfLegExercises", adminService.numberOfLegExercises());
-        model.addAttribute("numberOfLunge", adminService.numberOfLegExercisesByType(LegExerciseType.LUNGE));
-        model.addAttribute("numberOfSquat", adminService.numberOfLegExercisesByType(LegExerciseType.SQUAT));
-        model.addAttribute("numberOfStepUp", adminService.numberOfLegExercisesByType(LegExerciseType.STEP_UP));
-        model.addAttribute("numberOfLungeCount", adminService.numberOfLegExerciseCountsByType(LegExerciseType.LUNGE));
-        model.addAttribute("numberOfSquatCount", adminService.numberOfLegExerciseCountsByType(LegExerciseType.SQUAT));
-        model.addAttribute("numberOfStepUpCount", adminService.numberOfLegExerciseCountsByType(LegExerciseType.STEP_UP));
+        model.addAttribute("numberOfUsers", service.numberOfUsers());
+        model.addAttribute("numberOfLegExercises", service.numberOfLegExercises());
+        model.addAttribute("numberOfLunge", service.numberOfLegExercisesByType(LegExerciseType.LUNGE));
+        model.addAttribute("numberOfSquat", service.numberOfLegExercisesByType(LegExerciseType.SQUAT));
+        model.addAttribute("numberOfStepUp", service.numberOfLegExercisesByType(LegExerciseType.STEP_UP));
+        model.addAttribute("numberOfLungeCount", service.numberOfLegExerciseCountsByType(LegExerciseType.LUNGE));
+        model.addAttribute("numberOfSquatCount", service.numberOfLegExerciseCountsByType(LegExerciseType.SQUAT));
+        model.addAttribute("numberOfStepUpCount", service.numberOfLegExerciseCountsByType(LegExerciseType.STEP_UP));
         return "admin/statistics/index";
     }
 
@@ -52,7 +52,7 @@ public class AdminController {
         @RequestParam(defaultValue = "1") int pageNo,
         Model model
     ) {
-        Page<LegExercise> page = legExerciseService.findPaginatedAndSorted(pageNo);
+        Page<LegExercise> page = service.findPaginatedAndSorted(pageNo);
         List<LegExerciseDto> legExercises = page.getContent().stream().map(l -> legExerciseService.convertToDto(l)).toList();
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());
@@ -64,7 +64,7 @@ public class AdminController {
 
     @DeleteMapping({"leg-exercises/{id}", "leg-exercise/{id}/"})
     public String deleteLegExercise(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
-        legExerciseService.delete(id);
+        service.delete(id);
         redirectAttributes.addFlashAttribute("success", "Leg exercise deleted successfully!");
         return "redirect:/admin/leg-exercises";
     }
@@ -76,7 +76,7 @@ public class AdminController {
         @RequestParam Optional<String> sortBy,
         Model model
     ) {
-        Page<WorkoutUser> page = workoutUserService.findPaginatedAndSorted(pageNo, email, sortBy);
+        Page<WorkoutUser> page = service.findPaginatedAndSorted(pageNo, email, sortBy);
         List<WorkoutUserDto> workoutUsers = page.getContent().stream().map(w -> workoutUserService.convertToDto(w)).toList();
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());
@@ -88,21 +88,21 @@ public class AdminController {
 
     @DeleteMapping({"users/{id}", "users/{id}/"})
     public String deleteWorkoutUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        workoutUserService.delete(id);
+        service.delete(id);
         redirectAttributes.addFlashAttribute("success", "Workout user deleted successfully!");
         return "redirect:/admin/users";
     }
 
     @GetMapping({"online-users", "online-users/"})
     public String listAllOnlineUsers(Model model) {
-        List<WorkoutUser> allOnlineUsers = workoutUserService.findAllOnline();
+        List<WorkoutUser> allOnlineUsers = service.findAllOnline();
         model.addAttribute("allOnlineUsers", allOnlineUsers);
         return "admin/workoutusers/online-users";
     }
 
     @PostMapping({"users/{id}", "users/{id}/"})
     public String logoutUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        workoutUserService.logout(id);
+        service.logout(id);
         redirectAttributes.addFlashAttribute("success", "Logout user successfully!");
         return "redirect:/admin/online-users";
     }
